@@ -16,124 +16,104 @@
     
     <dependencies>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>org-apache-commons-logging</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>cglib-2.2</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-aop-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-aspects-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-beans-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-build-src-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-context-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-context-support-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-core-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument-tomcat</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-expression-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-framework-bom-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-instrument-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-instrument-tomcat-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-jdbc-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-jms-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-messaging-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-orm-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-oxm-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-test-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-tx-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-web-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-webmvc-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-webmvc-portlet-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>spring-websocket-4.0.1.RELEASE</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>4.0.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp.jstl</groupId>
@@ -149,6 +129,11 @@
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
             <version>4.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
