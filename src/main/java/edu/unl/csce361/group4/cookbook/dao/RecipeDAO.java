@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface RecipeDAO {
     Recipe getRecipe(long recipeId);
+    Recipe getRecipeForName(String recipeName);
     void create(Recipe recipe);
     void modify(Recipe recipe);
     void delete(Recipe recipe);

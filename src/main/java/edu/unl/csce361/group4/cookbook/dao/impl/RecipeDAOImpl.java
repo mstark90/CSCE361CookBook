@@ -49,5 +49,10 @@ public class RecipeDAOImpl implements RecipeDAO {
     public List<Recipe> getRecipesForCategory(String category, long offset, long count) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Recipe getRecipeForName(String recipeName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
