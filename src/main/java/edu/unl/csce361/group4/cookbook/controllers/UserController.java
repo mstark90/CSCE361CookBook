@@ -25,19 +25,19 @@ public class UserController {
         return userDAO.login(userName, password);
     }
     
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     public User createUser(User user) {
         userDAO.create(user);
         return user;
     }
     
-    @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "/modifyUser", method = RequestMethod.POST)
     public User modifyUser(User user) {
         userDAO.modify(user);
         return user;
     }
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
     public User deleteUser(User user) {
         userDAO.delete(user);
         return user;
