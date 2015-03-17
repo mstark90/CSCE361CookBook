@@ -37,7 +37,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 	@Override
     public List<Ingredient> findIngredient(String name, long offset, long count) 
     {
-    	String sql = "SELECT * FROM Ingredients WHERE Name = ?";
+    	String sql = "SELECT * FROM ingredients WHERE ingredient_name = ?";
     	
 		List<Ingredient> ingredients = dataSource.query(sql, new Object[]{name}, new BeanPropertyRowMapper(Ingredient.class));
     	
@@ -47,8 +47,8 @@ public class IngredientDAOImpl implements IngredientDAO {
     @Override
     public void create(Ingredient ingredient) 
     {
-        String sql = "INSERT INTO Ingredient "
-        		+ "(ingredientName, measuringUnits, retailPrice, servingSize, containerAmount) "
+        String sql = "INSERT INTO ingredients "
+        		+ "(ingredient_name, measuring_units, retail_price, serving_size, container_amount) "
         		+ "VALUES (?, ?, ?, ?, ?)";
         
         dataSource.update(sql, new Object[]
@@ -73,9 +73,9 @@ public class IngredientDAOImpl implements IngredientDAO {
     @Override
     public void modify(Ingredient ingredient) 
     {
-    	String sql = "UPDATE Ingredient SET ingredientName = ?, measuringUnits = ?, "
-    			+ "retailPrice = ?, servingSize = ?, containerAmount = ? "
-    			+ "WHERE ingredientId = ?";
+    	String sql = "UPDATE ingredients SET ingredient_name = ?, measuring_units = ?, "
+    			+ "retail_price = ?, serving_size = ?, container_amount = ? "
+    			+ "WHERE ingredient_id = ?";
     	
     	dataSource.update(sql, new Object[]
     		{
@@ -101,7 +101,7 @@ public class IngredientDAOImpl implements IngredientDAO {
     @Override
     public void delete(Ingredient ingredient) 
     {
-    	String sql = "DELETE FROM Ingredient WHERE `ingredientId` = ?";
+    	String sql = "DELETE FROM ingredients WHERE ingredient_id = ?";
     	
     	dataSource.update(sql, 
     		new Object[] 
@@ -127,7 +127,7 @@ public class IngredientDAOImpl implements IngredientDAO {
     	
     	for (Long id : ingredientIds)
     	{
-    		String sql = "SELECT * FROM Ingredient WHERE `ingredientId` = ?";
+    		String sql = "SELECT * FROM ingredients WHERE ingredient_id = ?";
     		
     		ingredients.add(
     			(Ingredient) dataSource.query(sql, 
