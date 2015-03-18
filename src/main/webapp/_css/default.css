@@ -1,0 +1,120 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 18, 2015, 2:45:31 PM
+    Author     : mstark
+*/
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#header {
+    height: 50px;
+    width: 100%;
+    box-shadow: 0px 2px 2px #DDD;
+    background-color: #2185FF;
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    font-size: 15pt;
+    font-family: helvetica;
+}
+
+#header #cookbook-logo {
+    float: left;
+    line-height: 50px;
+    margin-left: 10px;
+}
+
+#header .nav {
+    display: none;
+    float: left;
+    position: relative;
+    margin-left: calc(50% - 300px);
+    line-height: 50px;
+}
+
+#header #right-container {
+    width: 50px;
+    float: right;
+    margin-top: 10px;
+}
+
+#header #right-container span img {
+    margin-top: 2.5px;
+}
+
+#header #search-query {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding-left: 10px;
+    width: 100%;
+    z-index: 20;
+    border: none;
+    height: 30px;
+    float: left;
+}
+
+#header #search-submit {
+    background-color: rgba(0, 0, 0, 0);
+    line-height: 30px;
+    height: 32px;
+}
+
+#header #settings-button {
+    display: none;
+}
+
+#footer {
+    width: 100%;
+    height: 50px;
+    background-color: #2185FF;
+    z-index: 10;
+    position: fixed;
+    bottom: 0;
+}
+
+#footer .nav {
+    width: 100%;
+    line-height: 50px;
+}
+
+@media screen and (min-width: 800px) {
+    #header .nav {
+        display: block;
+    }
+    
+    #header #right-container {
+        width: 400px;
+    }
+    
+    #header #search-query {
+        display: block;
+        width: 300px;
+    }
+    
+    #header #search-submit {
+        background-color: rgba(255, 255, 255, 0.5);
+        line-height: 30px;
+        float: left;
+        width: 30px;
+    }
+
+    #header #settings-button {
+        display: inline;
+        margin-left: 5px;
+    }
+    
+    #footer {
+        height: 30px;
+    }
+    #footer .nav {
+        display: none;
+    }
+}
