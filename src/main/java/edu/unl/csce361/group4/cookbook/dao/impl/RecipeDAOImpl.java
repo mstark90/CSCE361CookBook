@@ -34,7 +34,7 @@ public class RecipeDAOImpl implements RecipeDAO {
 	@Override
     public Recipe getRecipe(long recipeId) 
     {
-        String sql = "SELECT * FROM Recipe WHERE recipeId = ?";
+        String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
         
         Recipe recipe = (Recipe) dataSource.query(sql,
         				new Object[]{ recipeId }, 
@@ -47,42 +47,38 @@ public class RecipeDAOImpl implements RecipeDAO {
     public void create(Recipe recipe) 
     {
     	//Add recipe to recipe table
-    	String sql = "INSERT INTO Recipe (recipeName, recipeDescription) VALUES (?, ?)";
+    	String sql = "INSERT INTO recipes (recipe_name, description) VALUES (?, ?)";
         
         dataSource.update(sql, 
         	new Object[]
     		{
         		recipe.getRecipeName(),
-        		recipe.getDescription(),
-        		//ingredients?
+        		recipe.getDescription()
     		});
         
     	//Get recipeID
         long recipeId = getRecipeForName(recipe.getRecipeName()).getRecipeId();
     	
-    	//For each ingredient, create an entry in the ingredient_recipe_join table
+    	//For each ingredient, create an entry in the recipe_ingredients table
     	for (Ingredient item : recipe.getIngredients())
     	{
-    		sql = "INSERT INTO RecipeIngredientJoin (recipeId, ingredientId) VALUES (?, ?)";
+    		sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
     		
     		dataSource.update(sql, 
     			new Object[]
     			{
-    				recipeId, item.getIngredientId()
+    				recipeId, 
+    				item.getIngredientId()
     			});
     	}
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void modify(Recipe recipe) 
     {
-    	//Depends on database table arrangement -- Cannot proceed
-    	if (recipe != null) throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    	
         //Modify recipe table
-    	String sql = "UPDATE Recipe "
-    			+ "SET recipeName = ?, recipeDescription = ?"
+    	String sql = "UPDATE recipes "
+    			+ "SET recipe_name = ?, description = ?, category = ?"
     			+ "WHERE recipeId = ?";
     	
     	dataSource.update(sql, 
@@ -90,24 +86,25 @@ public class RecipeDAOImpl implements RecipeDAO {
     			{
     				recipe.getRecipeName(),
     				recipe.getDescription(),
+    				recipe.getCategory(),
     				recipe.getRecipeId()
     			});
     	
     	//Modify join table to
     	for (Ingredient item : recipe.getIngredients())
     	{
-    		sql = "SELECT * WHERE recipeId = ? and ingredientId = ?";
-    		int sizeOfResult = dataSource.query(sql, 
+    		sql = "SELECT favorite_recipe_id WHERE recipe_id = ? and ingredient_id = ?";
+    		Long recipe_ingredient_id = dataSource.queryForObject(sql, 
     				new Object[]
     				{
     					recipe.getRecipeId(),
     					item.getIngredientId()
     				}, 
-    				new BeanPropertyRowMapper(Recipe.class)).size();
+    				Long.class);
     		
-    		if (sizeOfResult == 0)
+    		if (recipe_ingredient_id == null || recipe_ingredient_id == 0)
     		{
-    			sql = "INSERT INTO IngredientRecipeJoin (recipeId, ingredientId) VALUES (?, ?)";
+    			sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
     			dataSource.update(sql, 
     					new Object[]
 						{
@@ -117,7 +114,18 @@ public class RecipeDAOImpl implements RecipeDAO {
     		}
     		else
     		{
+    			sql = "UPDATE recipe_ingredients "
+    					+ "SET recipe_id = ?, ingredient_id = ? "
+    					+ "WHERE recipe_ingredient_id = ?";
     			
+    			dataSource.update(sql, 
+    					new Object[]
+						{
+    						recipe.getRecipeId(),
+    						item.getIngredientId(),
+    						recipe_ingredient_id
+    					
+						});
     		}
     	}
     }
@@ -126,27 +134,35 @@ public class RecipeDAOImpl implements RecipeDAO {
     public void delete(Recipe recipe) 
     {
     	//Delete all referencing entries in the join table
-    	String sql = "DELETE FROM IngredientRecipeJoin WHERE recipeId = ?";
+    	String sql = "DELETE FROM recipe_ingredients WHERE recipe_id = ?";
     	
     	dataSource.update(sql, new Object[]{ recipe.getRecipeId() });
     	
     	//Delete recipe
-    	sql = "DELETE FROM Recipe WHERE recipeId = ?";
+    	sql = "DELETE FROM recipes WHERE recipe_id = ?";
     	
     	dataSource.update(sql, new Object[]{ recipe.getRecipeId() });
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<Recipe> getRecipesForCategory(String category, long offset, long count) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	String sql = "SELECT * FROM recipes where category = ?";
+    	
+    	return (List<Recipe>) dataSource.query(sql, 
+    			new Object[]
+    			{
+    				category
+    			},
+    			new BeanPropertyRowMapper(Recipe.class));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Recipe getRecipeForName(String recipeName) 
     {
-    	String sql = "SELECT * FROM Recipe WHERE recipeName = ?";
+    	String sql = "SELECT * FROM recipes WHERE recipe_name = ?";
     	
     	return (Recipe) dataSource.query(sql, new Object[]{ recipeName }, new BeanPropertyRowMapper(Recipe.class)).get(0);
     	
