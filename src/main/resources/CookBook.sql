@@ -24,7 +24,6 @@ CREATE TABLE recipes
     (recipe_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
      recipe_name VARCHAR(255) NOT NULL,
      category VARCHAR(100) NOT NULL,
-     image_url VARCHAR(2048) NOT NULL,
      description TEXT NOT NULL);
 
 CREATE TABLE recipe_ingredients
