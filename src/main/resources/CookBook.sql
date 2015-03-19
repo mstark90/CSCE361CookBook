@@ -47,3 +47,4 @@ CREATE TABLE recipe_owners
      recipe_id BIGINT NOT NULL,
      FOREIGN KEY (user_id) REFERENCES users (user_id),
      FOREIGN KEY (recipe_id) REFERENCES recipes (recipe_id));
+
