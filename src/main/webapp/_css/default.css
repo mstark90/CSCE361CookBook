@@ -98,10 +98,14 @@ body {
     line-height: 50px;
 }
 .recipe-item {
-    background-color: #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
     color: black;
     height: 160px;
     width: 100%;
+}
+
+.recipe-item:last-child {
+    border-bottom: none;
 }
 
 .recipe-item .recipe-item-img {
