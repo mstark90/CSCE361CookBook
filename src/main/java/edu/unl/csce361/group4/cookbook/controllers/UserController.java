@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author mstark
  */
 @RestController
-@RequestMapping("/users/")
+@RequestMapping("/users")
 public class UserController {
     private UserDAO userDAO;
     

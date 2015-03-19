@@ -20,6 +20,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,8 +43,21 @@ public class RecipeController {
     public RecipeController() {
         solrClient = new HttpSolrServer("http://localhost:8983/solr/cookbook");
     }
+    
+    @RequestMapping(value = "all", method = RequestMethod.GET)
+    public List<Recipe> getRecipes(@RequestParam(value = "offset", defaultValue = "0") long offset,
+            @RequestParam(value = "query", defaultValue = "10") long count) {
+        return recipeDAO.getRecipesForCategory("", offset, count);
+    }
+    
+    @RequestMapping(value = "category/{category}", method = RequestMethod.GET)
+    public List<Recipe> getRecipesByCategory(@PathVariable(value = "category") String category,
+            @RequestParam(value = "offset", defaultValue = "0") long offset,
+            @RequestParam(value = "query", defaultValue = "10") long count) {
+        return recipeDAO.getRecipesForCategory(category, offset, count);
+    }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
+    @RequestMapping(value = "find", method = RequestMethod.GET)
     public List<Recipe> findRecipes(@RequestParam("query") String query,
             @RequestParam(value = "offset", defaultValue = "0") long offset,
             @RequestParam(value = "query", defaultValue = "10") long count) {
@@ -66,26 +80,34 @@ public class RecipeController {
         return recipes;
     }
 
-    @RequestMapping(value = "/createRecipe", method = RequestMethod.POST)
-    public Recipe createRecipe(Recipe recipe) {
+    @RequestMapping(value = "createRecipe", method = RequestMethod.POST, consumes = "application/json")
+    public Recipe createRecipe(@RequestBody Recipe recipe) {
         recipeDAO.create(recipe);
         return recipe;
     }
 
-    @RequestMapping(value = "/modifyRecipe", method = RequestMethod.POST)
-    public Recipe modifyRecipe(Recipe recipe) {
+    @RequestMapping(value = "modifyRecipe", method = RequestMethod.POST, consumes = "application/json")
+    public Recipe modifyRecipe(@RequestBody Recipe recipe) {
         recipeDAO.modify(recipe);
         return recipe;
     }
 
-    @RequestMapping(value = "/deleteRecipe", method = RequestMethod.POST)
-    public Recipe deleteRecipe(Recipe recipe) {
+    @RequestMapping(value = "deleteRecipe", method = RequestMethod.POST, consumes = "application/json")
+    public Recipe deleteRecipe(@RequestBody Recipe recipe) {
         recipeDAO.delete(recipe);
         return recipe;
     }
 
-    @RequestMapping(value = "/get/{recipeName}", method = RequestMethod.GET)
+    @RequestMapping(value = "get/name/{recipeName}", method = RequestMethod.GET)
     public Recipe getRecipe(@PathVariable("recipeName") String recipeName) {
         return recipeDAO.getRecipeForName(recipeName);
+    }
+    
+    @RequestMapping(value = "get/id/{recipeId}", method = RequestMethod.GET)
+    public Recipe getRecipeById(@PathVariable("recipeId") long id) {
+        if(id == 0) {
+            return null;
+        }
+        return recipeDAO.getRecipe(id);
     }
 }

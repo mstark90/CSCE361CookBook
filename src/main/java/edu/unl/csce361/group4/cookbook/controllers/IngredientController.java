@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author mstark
  */
 @RestController
-@RequestMapping("/ingredients/")
+@RequestMapping("/ingredients")
 public class IngredientController {
     private IngredientDAO ingredientDAO;
     private final SolrServer solrClient;
