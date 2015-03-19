@@ -51,7 +51,6 @@ public class UserDAOImpl implements UserDAO {
     			new Object[]
     			{
     				user.getUserName(),
-    				user.getPassword(), //??
     				user.getFullName(),
     			});
     	
@@ -125,7 +124,6 @@ public class UserDAOImpl implements UserDAO {
     			new Object[]
     			{
     				user.getUserName(),
-    				user.getPassword(), //??
     				user.getFullName(),
     				user.getUserId()
     			});

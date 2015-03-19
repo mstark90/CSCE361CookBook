@@ -8,6 +8,10 @@ package edu.unl.csce361.group4.cookbook.dao.impl;
 import edu.unl.csce361.group4.cookbook.Ingredient;
 import edu.unl.csce361.group4.cookbook.Recipe;
 import edu.unl.csce361.group4.cookbook.dao.RecipeDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.util.List;
 
@@ -16,6 +20,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 /**
  *
@@ -36,40 +43,79 @@ public class RecipeDAOImpl implements RecipeDAO {
     {
         String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
         
-        Recipe recipe = (Recipe) dataSource.query(sql,
-        				new Object[]{ recipeId }, 
-        				new BeanPropertyRowMapper(Recipe.class)).get(0);
+        Recipe recipe = (Recipe) dataSource.queryForObject(sql, new BeanPropertyRowMapper(Recipe.class),
+                new Object[]{ recipeId });
+        
+        sql = "SELECT ingredients.* FROM ingredients LEFT JOIN recipe_ingredients"
+                + " ON recipe_ingredients.ingredient_id = ingredients.ingredient_id"
+                + " WHERE recipe_id = ?";
+        
+        recipe.setIngredients(dataSource.query(sql, new Object[]{recipe.getRecipeId() }, new BeanPropertyRowMapper(Ingredient.class)));
         
         return recipe;
     }
 
     @Override
-    public void create(Recipe recipe) 
+    public void create(final Recipe recipe) 
     {
     	//Add recipe to recipe table
-    	String sql = "INSERT INTO recipes (recipe_name, description) VALUES (?, ?)";
+    	String sql = "INSERT INTO recipes (recipe_name, description, category) VALUES (?, ?, ?)";
         
-        dataSource.update(sql, 
-        	new Object[]
-    		{
-        		recipe.getRecipeName(),
-        		recipe.getDescription()
-    		});
+        KeyHolder holder = new GeneratedKeyHolder();
         
-    	//Get recipeID
-        long recipeId = getRecipeForName(recipe.getRecipeName()).getRecipeId();
+        dataSource.update(new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection cnctn) throws SQLException {
+                String sql = "INSERT INTO recipes (recipe_name, description, category, image_url) VALUES (?, ?, ?, ?)";
+                PreparedStatement ps = cnctn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+                ps.setString(1, recipe.getRecipeName());
+                ps.setString(2, recipe.getDescription());
+                ps.setString(3, recipe.getCategory());
+                ps.setString(4, recipe.getImageUrl());
+
+                return ps;
+            }
+        }, holder);
+        
+        recipe.setRecipeId(holder.getKey().longValue());
     	
     	//For each ingredient, create an entry in the recipe_ingredients table
-    	for (Ingredient item : recipe.getIngredients())
+    	for (final Ingredient ingredient : recipe.getIngredients())
     	{
-    		sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
-    		
-    		dataSource.update(sql, 
-    			new Object[]
-    			{
-    				recipeId, 
-    				item.getIngredientId()
-    			});
+            if(ingredient.getIngredientId() == 0) {
+                holder = new GeneratedKeyHolder();
+        
+                dataSource.update(new PreparedStatementCreator() {
+
+                    @Override
+                    public PreparedStatement createPreparedStatement(Connection cnctn) throws SQLException {
+                        String sql = "INSERT INTO ingredients "
+                                + "(ingredient_name, measuring_units, retail_price, serving_size, container_amount) "
+                                + "VALUES (?, ?, ?, ?, ?)";
+                        PreparedStatement ps = cnctn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+                        ps.setString(1, ingredient.getIngredientName());
+                        ps.setString(2, ingredient.getMeasuringUnits().toString());
+                        ps.setFloat(3, ingredient.getRetailPrice());
+                        ps.setFloat(4, ingredient.getServingSize());
+                        ps.setFloat(5, ingredient.getContainerAmount());
+
+                        return ps;
+                    }
+                }, holder);
+
+                ingredient.setIngredientId(holder.getKey().longValue());
+            }
+            sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
+
+            dataSource.update(sql, 
+                    new Object[]
+                    {
+                            recipe.getRecipeId(), 
+                            ingredient.getIngredientId()
+                    });
     	}
     }
 

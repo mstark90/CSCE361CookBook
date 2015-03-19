@@ -17,6 +17,7 @@ public class Recipe {
     private String description;
     private List<Ingredient> ingredients;
     private String category;
+    private String imageUrl;
 
     /**
      * @return the recipeId
@@ -86,5 +87,19 @@ public class Recipe {
      */
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    /**
+     * @return the imageUrl
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    /**
+     * @param imageUrl the imageUrl to set
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

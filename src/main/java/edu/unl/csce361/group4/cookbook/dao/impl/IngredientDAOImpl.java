@@ -6,19 +6,23 @@
 package edu.unl.csce361.group4.cookbook.dao.impl;
 
 import edu.unl.csce361.group4.cookbook.Ingredient;
-import edu.unl.csce361.group4.cookbook.MeasuringUnits;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
+import java.sql.Connection;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 /**
  *
@@ -45,20 +49,32 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     @Override
-    public void create(Ingredient ingredient) 
+    public void create(final Ingredient ingredient) 
     {
-        String sql = "INSERT INTO ingredients "
+        
+        
+        KeyHolder holder = new GeneratedKeyHolder();
+        
+        dataSource.update(new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection cnctn) throws SQLException {
+                String sql = "INSERT INTO ingredients "
         		+ "(ingredient_name, measuring_units, retail_price, serving_size, container_amount) "
         		+ "VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement ps = cnctn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                
+                ps.setString(1, ingredient.getIngredientName());
+                ps.setString(2, ingredient.getMeasuringUnits().toString());
+                ps.setFloat(3, ingredient.getRetailPrice());
+                ps.setFloat(4, ingredient.getServingSize());
+                ps.setFloat(5, ingredient.getContainerAmount());
+                
+                return ps;
+            }
+        }, holder);
         
-        dataSource.update(sql, new Object[]
-        		{
-        			ingredient.getIngredientName(), 
-        			ingredient.getMeasuringUnits(),
-        			ingredient.getRetailPrice(),
-        			ingredient.getServingSize(),
-        			ingredient.getContainerAmount()
-        		});
+        ingredient.setIngredientId(holder.getKey().longValue());
     }
 
     @Override

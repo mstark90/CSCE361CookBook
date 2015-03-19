@@ -17,5 +17,7 @@ public enum MeasuringUnits {
     GRAMS,
     TEASPOON,
     TABLESPOON,
-    SPRINKLE
+    SPRINKLE,
+    UNIT,
+    CUP
 }
