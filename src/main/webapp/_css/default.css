@@ -100,7 +100,7 @@ body {
 .recipe-item {
     border-bottom: 1px solid #E6E6E6;
     color: black;
-    height: 160px;
+    min-height: 160px;
     width: 100%;
 }
 
