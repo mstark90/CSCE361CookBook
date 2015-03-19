@@ -20,6 +20,7 @@
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
+                <prop key="simplefile.htm">simpleFileController</prop>
             </props>
         </property>
     </bean>
@@ -35,5 +36,9 @@
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
+          
+    <bean name="simpleFileController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="simplefile" />
 
 </beans>
