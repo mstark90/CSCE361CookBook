@@ -6,7 +6,7 @@
 
 <div id="header">
     <span id="cookbook-logo">
-        CookBook
+     <a href="index.jsp">CookBook</a>
     </span>
     <div class="nav">
         <span>

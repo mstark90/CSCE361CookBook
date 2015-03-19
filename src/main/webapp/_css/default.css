@@ -90,6 +90,13 @@ html, body {
         display: block;
     }
     
+    #recipe-list {
+        margin-top: 50px;
+        height: calc(100% - 100px);
+        width: 60%;
+        margin-left: 20%;
+    }
+    
     #header #right-container {
         width: 400px;
     }
