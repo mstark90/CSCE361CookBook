@@ -43,7 +43,12 @@ public class IngredientDAOImpl implements IngredientDAO {
     {
     	String sql = "SELECT * FROM ingredients WHERE ingredient_name = ?";
     	
-		List<Ingredient> ingredients = dataSource.query(sql, new Object[]{name}, new BeanPropertyRowMapper(Ingredient.class));
+        List<Ingredient> ingredients = dataSource.query(sql, 
+                new Object[]
+                {
+                    name
+                }, 
+                new BeanPropertyRowMapper(Ingredient.class));
     	
     	return ingredients;
     }
@@ -51,8 +56,6 @@ public class IngredientDAOImpl implements IngredientDAO {
     @Override
     public void create(final Ingredient ingredient) 
     {
-        
-        
         KeyHolder holder = new GeneratedKeyHolder();
         
         dataSource.update(new PreparedStatementCreator() {
@@ -96,7 +99,7 @@ public class IngredientDAOImpl implements IngredientDAO {
     	dataSource.update(sql, new Object[]
     		{
     			ingredient.getIngredientName(),
-    			ingredient.getMeasuringUnits(),
+    			ingredient.getMeasuringUnits().toString(),
     			ingredient.getRetailPrice(),
     			ingredient.getServingSize(),
     			ingredient.getContainerAmount(),
@@ -139,7 +142,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 	@Override
     public List<Ingredient> getIngredients(List<Long> ingredientIds) 
     {
-    	List<Ingredient> ingredients = new ArrayList<Ingredient>();
+    	List<Ingredient> ingredients = new ArrayList<>();
     	
     	for (Long id : ingredientIds)
     	{

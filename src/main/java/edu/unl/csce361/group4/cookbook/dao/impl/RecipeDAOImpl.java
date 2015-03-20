@@ -43,8 +43,16 @@ public class RecipeDAOImpl implements RecipeDAO {
     {
         String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
         
-        Recipe recipe = (Recipe) dataSource.queryForObject(sql, new BeanPropertyRowMapper(Recipe.class),
-                new Object[]{ recipeId });
+        List<Recipe> recipes = dataSource.query(sql,
+                new Object[]
+                { 
+                    recipeId 
+                }, new BeanPropertyRowMapper(Recipe.class));
+        
+        if (recipes.isEmpty())
+            return null;
+        
+        Recipe recipe = recipes.get(0);
         
         sql = "SELECT ingredients.* FROM ingredients LEFT JOIN recipe_ingredients"
                 + " ON recipe_ingredients.ingredient_id = ingredients.ingredient_id"
@@ -59,8 +67,6 @@ public class RecipeDAOImpl implements RecipeDAO {
     public void create(final Recipe recipe) 
     {
     	//Add recipe to recipe table
-    	String sql = "INSERT INTO recipes (recipe_name, description, category) VALUES (?, ?, ?)";
-        
         KeyHolder holder = new GeneratedKeyHolder();
         
         dataSource.update(new PreparedStatementCreator() {
@@ -108,7 +114,7 @@ public class RecipeDAOImpl implements RecipeDAO {
 
                 ingredient.setIngredientId(holder.getKey().longValue());
             }
-            sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
+            String sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
 
             dataSource.update(sql, 
                     new Object[]
@@ -120,12 +126,12 @@ public class RecipeDAOImpl implements RecipeDAO {
     }
 
     @Override
-    public void modify(Recipe recipe) 
+    public void modify(Recipe recipe) //Not required for Phase 1
     {
         //Modify recipe table
     	String sql = "UPDATE recipes "
     			+ "SET recipe_name = ?, description = ?, category = ?"
-    			+ "WHERE recipeId = ?";
+    			+ "WHERE recipe_id = ?";
     	
     	dataSource.update(sql, 
     			new Object[]
@@ -136,6 +142,11 @@ public class RecipeDAOImpl implements RecipeDAO {
     				recipe.getRecipeId()
     			});
     	
+        if (recipe.getIngredients() == null || recipe.getIngredients().isEmpty())
+        {
+            return;
+        }
+            
     	//Modify join table to
     	for (Ingredient item : recipe.getIngredients())
     	{
@@ -210,8 +221,14 @@ public class RecipeDAOImpl implements RecipeDAO {
     {
     	String sql = "SELECT * FROM recipes WHERE recipe_name = ?";
     	
-    	return (Recipe) dataSource.query(sql, new Object[]{ recipeName }, new BeanPropertyRowMapper(Recipe.class)).get(0);
-    	
+    	List<Recipe> recipes = dataSource.query(sql, 
+                new Object[]{ recipeName }, 
+                new BeanPropertyRowMapper(Recipe.class));
+        
+        if (recipes.isEmpty())
+            return null;
+        
+        return recipes.get(0);
     }
     
 }
