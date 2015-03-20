@@ -60,12 +60,12 @@ public class RecipeController {
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public List<Recipe> findRecipes(@RequestParam("query") String query,
             @RequestParam(value = "offset", defaultValue = "0") long offset,
-            @RequestParam(value = "query", defaultValue = "10") long count) {
+            @RequestParam(value = "count", defaultValue = "10") long count) {
         List<Recipe> recipes = new LinkedList<>();
         
         try {
             SolrQuery solrQuery = new SolrQuery();
-            solrQuery.setQuery("recipeName:"+ query +"* OR ingredients:"+ query +"*");
+            solrQuery.setQuery("allContent:"+ query +"*");
             solrQuery.setStart((int)offset);
             solrQuery.setRows((int)count);
             
