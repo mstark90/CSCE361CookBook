@@ -8,6 +8,7 @@ package edu.unl.csce361.group4.cookbook.dao.impl;
 import edu.unl.csce361.group4.cookbook.Recipe;
 import edu.unl.csce361.group4.cookbook.User;
 import edu.unl.csce361.group4.cookbook.dao.UserDAO;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -32,14 +33,20 @@ public class UserDAOImpl implements UserDAO {
     public User login(String userName, String password) 
     {
         String sql = "SELECT * FROM users WHERE user_name = ? and password = ?";
+
         
-        return (User)dataSource.query(sql,
+        List<User> users = dataSource.query(sql,
         		new Object[]
         		{
         			userName,
         			password
         		},
-        		new BeanPropertyRowMapper(Recipe.class)).get(0);
+        		new BeanPropertyRowMapper(User.class));
+        
+        if (users.isEmpty())
+            return null;
+        
+        return users.get(0);
     }
 
     @Override
