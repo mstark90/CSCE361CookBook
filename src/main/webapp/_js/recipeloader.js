@@ -65,7 +65,7 @@ $(document).ready(function() {
             'Unable to find any recipes that match the current query.',
             '</div>'
           ].join('\n'),
-          suggestion: Handlebars.compile("<div class=\"search-suggestion\"><a href=\"recipage.jsp?recipe_id={{recipeId}}\"><img class=\"search-image\" src=\"{{imageUrl}}\" /><span>{{recipeName}}</span></a></div>")
+          suggestion: Handlebars.compile("<div class=\"search-suggestion\"><a href=\"recipage.jsp?recipeId={{recipeId}}\"><img class=\"search-image\" src=\"{{imageUrl}}\" /><span>{{recipeName}}</span></a></div>")
         }
       });
 });
