@@ -83,7 +83,7 @@ public class IngredientDAOTest {
         IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
         List<Ingredient> ingredientList = ingredientDAO.findIngredient("tacoSauce", 0, 0);
         
-        assert(ingredientList.size() == 0);
+        assert(ingredientList.isEmpty());
     }
     
     @Test
