@@ -65,7 +65,7 @@ body {
 
 #header #search-query {
     display: none;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.75) !important;
     padding-left: 10px;
     width: 100%;
     z-index: 20;
@@ -164,6 +164,14 @@ body {
     padding-top: 20px;
 }
 
+.twitter-typeahead {
+    float:left;
+}
+
+.tt-hint {
+    background-color: rgba(0, 0, 0, 0.0) !important;
+}
+
 @media screen and (min-width: 800px) {
     #header .nav {
         display: block;
@@ -191,7 +199,7 @@ body {
     }
 
     #header #search-submit {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.75);
         line-height: 30px;
         float: left;
         width: 30px;
@@ -213,5 +221,49 @@ body {
         float: right;
         width: calc(100% - 320px);
 
+    }
+    
+    .empty-message {
+        width: 300px;
+        height: 60px;
+        line-height: 60px;
+        background-color: rgba(255, 255, 255, 0.75);
+    }
+    
+    .search-suggestion {
+        width: 310px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.75);
+        border: 1px solid #CFCFCF;
+        border-top: none;
+    }
+    
+    .search-suggestion:hover {
+        background-color: rgba(200, 200, 200, 0.75);
+    }
+    
+    .search-suggestion a {
+        text-decoration: none;
+        color: black;
+        line-height: 60px;
+        float: left;
+    }
+    .search-suggestion a img {
+        height: 50px;
+        width: 50px;
+        margin-left: 10px;
+        margin-top: 10px;
+        float: left;
+    }
+    
+    .search-suggestion a span {
+        line-height: 60px;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-left: 10px;
+        display: inline-block;
+        max-width: 240px;
     }
 }
