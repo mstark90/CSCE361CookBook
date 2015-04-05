@@ -130,7 +130,7 @@ public class RecipeDAOImpl implements RecipeDAO {
     {
         //Modify recipe table
     	String sql = "UPDATE recipes "
-    			+ "SET recipe_name = ?, description = ?, category = ?"
+    			+ "SET recipe_name = ?, description = ?, category = ?, image_url = ? "
     			+ "WHERE recipe_id = ?";
     	
     	dataSource.update(sql, 
@@ -139,6 +139,7 @@ public class RecipeDAOImpl implements RecipeDAO {
     				recipe.getRecipeName(),
     				recipe.getDescription(),
     				recipe.getCategory(),
+                                recipe.getImageUrl(),
     				recipe.getRecipeId()
     			});
     	
@@ -150,7 +151,7 @@ public class RecipeDAOImpl implements RecipeDAO {
     	//Modify join table to
     	for (Ingredient item : recipe.getIngredients())
     	{
-    		sql = "SELECT favorite_recipe_id WHERE recipe_id = ? and ingredient_id = ?";
+    		sql = "SELECT recipe_ingredient_id FROM recipe_ingredients WHERE recipe_id = ? and ingredient_id = ?";
     		Long recipe_ingredient_id = dataSource.queryForObject(sql, 
     				new Object[]
     				{
@@ -220,15 +221,25 @@ public class RecipeDAOImpl implements RecipeDAO {
     public Recipe getRecipeForName(String recipeName) 
     {
     	String sql = "SELECT * FROM recipes WHERE recipe_name = ?";
-    	
-    	List<Recipe> recipes = dataSource.query(sql, 
-                new Object[]{ recipeName }, 
-                new BeanPropertyRowMapper(Recipe.class));
+        
+        List<Recipe> recipes = dataSource.query(sql,
+                new Object[]
+                { 
+                    recipeName 
+                }, new BeanPropertyRowMapper(Recipe.class));
         
         if (recipes.isEmpty())
             return null;
         
-        return recipes.get(0);
+        Recipe recipe = recipes.get(0);
+        
+        sql = "SELECT ingredients.* FROM ingredients LEFT JOIN recipe_ingredients"
+                + " ON recipe_ingredients.ingredient_id = ingredients.ingredient_id"
+                + " WHERE recipe_id = ?";
+        
+        recipe.setIngredients(dataSource.query(sql, new Object[]{recipe.getRecipeId() }, new BeanPropertyRowMapper(Ingredient.class)));
+        
+        return recipe;
     }
     
 }
