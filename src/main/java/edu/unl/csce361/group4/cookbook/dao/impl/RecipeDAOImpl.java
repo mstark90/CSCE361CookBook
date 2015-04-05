@@ -130,7 +130,7 @@ public class RecipeDAOImpl implements RecipeDAO {
     {
         //Modify recipe table
     	String sql = "UPDATE recipes "
-    			+ "SET recipe_name = ?, description = ?, category = ?"
+    			+ "SET recipe_name = ?, description = ?, category = ?, image_url = ? "
     			+ "WHERE recipe_id = ?";
     	
     	dataSource.update(sql, 
@@ -139,6 +139,7 @@ public class RecipeDAOImpl implements RecipeDAO {
     				recipe.getRecipeName(),
     				recipe.getDescription(),
     				recipe.getCategory(),
+                                recipe.getImageUrl(),
     				recipe.getRecipeId()
     			});
     	
