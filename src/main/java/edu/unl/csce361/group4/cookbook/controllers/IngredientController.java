@@ -79,7 +79,7 @@ public class IngredientController {
     }
     
     @RequestMapping(value="/modifyIngredient", method = RequestMethod.POST, consumes = "application/json")
-    public Ingredient modifyIngredient(Ingredient ingredient) {
+    public Ingredient modifyIngredient(@RequestBody Ingredient ingredient) {
         ingredientDAO.modify(ingredient);
         return ingredient;
     }
@@ -91,7 +91,7 @@ public class IngredientController {
     }
     
     @RequestMapping(value="/deleteIngredient", method = RequestMethod.POST, consumes = "application/json")
-    public Ingredient deleteIngredient(Ingredient ingredient) {
+    public Ingredient deleteIngredient(@RequestBody Ingredient ingredient) {
         ingredientDAO.delete(ingredient);
         return ingredient;
     }
