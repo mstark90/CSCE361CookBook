@@ -7,6 +7,7 @@ package edu.unl.csce361.group4.cookbook.controllers;
 
 import edu.unl.csce361.group4.cookbook.Ingredient;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,38 +66,38 @@ public class IngredientController {
         return ingredientDAO.getIngredients(ingredients);
     }
     
-    @RequestMapping(value="/createIngredient", method = RequestMethod.POST)
-    public Ingredient createIngredient(Ingredient ingredient) {
+    @RequestMapping(value="/createIngredient", method = RequestMethod.POST, consumes = "application/json")
+    public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         ingredientDAO.create(ingredient);
         return ingredient;
     }
     
-    @RequestMapping(value="/createIngredients", method = RequestMethod.POST)
-    public List<Ingredient> createIngredients(List<Ingredient> ingredients) {
+    @RequestMapping(value="/createIngredients", method = RequestMethod.POST, consumes = "application/json")
+    public List<Ingredient> createIngredients(@RequestBody LinkedList<Ingredient> ingredients) {
         ingredientDAO.create(ingredients);
         return ingredients;
     }
     
-    @RequestMapping(value="/modifyIngredient", method = RequestMethod.POST)
+    @RequestMapping(value="/modifyIngredient", method = RequestMethod.POST, consumes = "application/json")
     public Ingredient modifyIngredient(Ingredient ingredient) {
         ingredientDAO.modify(ingredient);
         return ingredient;
     }
     
-    @RequestMapping(value="/modifyIngredients", method = RequestMethod.POST)
-    public List<Ingredient> modifyIngredients(List<Ingredient> ingredients) {
+    @RequestMapping(value="/modifyIngredients", method = RequestMethod.POST, consumes = "application/json")
+    public List<Ingredient> modifyIngredients(@RequestBody LinkedList<Ingredient> ingredients) {
         ingredientDAO.modify(ingredients);
         return ingredients;
     }
     
-    @RequestMapping(value="/deleteIngredient", method = RequestMethod.POST)
+    @RequestMapping(value="/deleteIngredient", method = RequestMethod.POST, consumes = "application/json")
     public Ingredient deleteIngredient(Ingredient ingredient) {
         ingredientDAO.delete(ingredient);
         return ingredient;
     }
     
-    @RequestMapping(value="/deleteIngredients", method = RequestMethod.POST)
-    public List<Ingredient> deleteIngredients(List<Ingredient> ingredients) {
+    @RequestMapping(value="/deleteIngredients", method = RequestMethod.POST, consumes = "application/json")
+    public List<Ingredient> deleteIngredients(@RequestBody LinkedList<Ingredient> ingredients) {
         ingredientDAO.delete(ingredients);
         return ingredients;
     }
