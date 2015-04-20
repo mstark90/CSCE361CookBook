@@ -13,40 +13,14 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
     <context:component-scan base-package="edu.unl.csce361.group4.cookbook.controllers" />
 
     <mvc:annotation-driven />
-
-    <!--
-    Most controllers will use the ControllerClassNameHandlerMapping above, but
-    for the index controller we are using ParameterizableViewController, so we must
-    define an explicit mapping for it.
-    -->
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-                <prop key="index.htm">indexController</prop>
-                <prop key="simplefile.htm">simpleFileController</prop>
-            </props>
-        </property>
-    </bean>
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
-
-    <!--
-    The index controller.
-    -->
-    <bean name="indexController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="index" />
-          
-    <bean name="simpleFileController"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-          p:viewName="simplefile" />
     
     <bean name="ingredientDAO"
         class="edu.unl.csce361.group4.cookbook.dao.impl.IngredientDAOImpl" />
@@ -56,5 +30,7 @@
     
     <bean name="userDAO"
         class="edu.unl.csce361.group4.cookbook.dao.impl.UserDAOImpl" />
+    
+    <import resource="spring-security.xml" />
 
 </beans>

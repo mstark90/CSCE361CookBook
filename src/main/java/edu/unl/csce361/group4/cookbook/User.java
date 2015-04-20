@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class User {
     private long userId;
-    private String userName, fullName;
+    private String userName, fullName, password, emailAddress;
     private List<Recipe> favoriteRecipes;
     private String oauthToken, oauthSecret;
 
@@ -99,6 +99,34 @@ public class User {
      */
     public void setOauthSecret(String oauthSecret) {
         this.oauthSecret = oauthSecret;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the emailAddress
+     */
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    /**
+     * @param emailAddress the emailAddress to set
+     */
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
     
 }
