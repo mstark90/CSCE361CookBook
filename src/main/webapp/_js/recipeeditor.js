@@ -18,18 +18,30 @@ var recipeEditor= {
                                             <button onclick='recipeEditor.deleteIngredient($(this))'>-</button>\
                                             </li>"
                                             ),
-    getRecipe: function(recipeId) {
-        $.get("rest/recipes/get/id/"+ recipeId, function(data) {
-            $("#description-container").text(data.description);
-            $("#recipe-image").attr("src", data.imageUrl);
-            $("#recipe-name").text(data.recipeName);
-            $("#recipe-image-url").text(data.imageUrl);
-            $("#category-container").text(data.category);
-            $.each(data.ingredients, function(index, item) {
-                item.measuringUnits = item.measuringUnits.toLowerCase();
-                $("#ingredients").append(recipeEditor.ingredientTemplate(item));
+    getRecipe: function(recipeId) 
+    {
+        if (recipeId == 0 || recipeId == undefined)
+        {
+            $("#description-container").text("Description");
+            $("#recipe-image").attr("src", "");
+            $("#recipe-name").text("RecipeName");
+            $("#recipe-image-url").text("ImageUrl");
+            $("#category-container").text("Category");
+        }
+        else
+        {
+            $.get("rest/recipes/get/id/"+ recipeId, function(data) {
+                $("#description-container").text(data.description);
+                $("#recipe-image").attr("src", data.imageUrl);
+                $("#recipe-name").text(data.recipeName);
+                $("#recipe-image-url").text(data.imageUrl);
+                $("#category-container").text(data.category);
+                $.each(data.ingredients, function(index, item) {
+                    item.measuringUnits = item.measuringUnits.toLowerCase();
+                    $("#ingredients").append(recipeEditor.ingredientTemplate(item));
+                });
             });
-        });
+        }
     },
     
     checkIngredient: function(textareaobj)
@@ -78,36 +90,64 @@ var recipeEditor= {
     
     postRecipe: function (recipeId)
     {
-        $.ajax({
-                type: "POST", 
-                url: "rest/recipes/modifyRecipe", 
-                data: 
-                JSON.stringify({
-                    "recipeId": recipeId,
-                    "recipeName": $("#recipe-name").val(),
-                    "imageUrl": $("#recipe-image-url").val(),
-                    "description": $("#description-container").val(),
-                    "category": $("#category-container").val(),
-                    "ingredients": ingredientList
-                            
-                }),
-                success:
-                function(data)
+        if (recipeId == 0 || recipeId == undefined)
+        {
+            $.ajax(
                 {
-                    if (data.recipeId == 0)
+                    type: "POST",
+                    url: "rest/recipes/createRecipe",
+                    data: JSON.stringify(
+                        {
+                            "recipeName": $("#recipe-name").val(),
+                            "imageUrl": $("#recipe-image-url").val(),
+                            "description": $("#description-container").val(),
+                            "category": $("#category-container").val(),
+                            "ingredients": ingredientList
+                        }),
+                    success: function(data)
                     {
-                        $("#saveStatus").show();
-                        $("#saveStatus").text("Failed..."); 
-                    }
-                    else
+                        if (data.recipeId != undefined && data.recipeId != 0)
+                        {
+                            window.location.href = "recipeEditPage.jsp?recipeId=" + data.recipeId;
+                        }
+                    },
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8"
+                });
+        }
+        else
+        {
+            $.ajax({
+                    type: "POST", 
+                    url: "rest/recipes/modifyRecipe", 
+                    data: 
+                    JSON.stringify({
+                        "recipeId": recipeId,
+                        "recipeName": $("#recipe-name").val(),
+                        "imageUrl": $("#recipe-image-url").val(),
+                        "description": $("#description-container").val(),
+                        "category": $("#category-container").val(),
+                        "ingredients": ingredientList
+
+                    }),
+                    success:
+                    function(data)
                     {
-                        $("#saveStatus").show();
-                        $("#saveStatus").text("Successful!"); 
-                    }
-                },
-                dataType: "JSON",
-                contentType: "application/json; charset=utf-8"
-            });
+                        if (data.recipeId == 0)
+                        {
+                            $("#saveStatus").show();
+                            $("#saveStatus").text("Failed..."); 
+                        }
+                        else
+                        {
+                            $("#saveStatus").show();
+                            $("#saveStatus").text("Successful!"); 
+                        }
+                    },
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8"
+                });
+            }
     }            
 };
 
