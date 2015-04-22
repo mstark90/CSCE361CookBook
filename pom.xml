@@ -136,6 +136,12 @@
             <version>2.2</version>
         </dependency>
         <dependency>
+<<<<<<< HEAD
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.35</version>
+            <scope>test</scope>
+=======
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>4.0.0.RELEASE</version>
@@ -144,10 +150,7 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>4.0.0.RELEASE</version>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.35</version>
-            <scope>test</scope>
+>>>>>>> origin/master
         </dependency>
         <dependency>
             <groupId>javax</groupId>
