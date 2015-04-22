@@ -7,7 +7,6 @@ package edu.unl.csce361.group4.cookbook.controllers;
 
 import edu.unl.csce361.group4.cookbook.Ingredient;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
