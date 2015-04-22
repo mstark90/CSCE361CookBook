@@ -6,6 +6,7 @@
 package edu.unl.csce361.group4.cookbook.dao;
 
 import edu.unl.csce361.group4.cookbook.Ingredient;
+import edu.unl.csce361.group4.cookbook.IngredientNutritionInformation;
 import java.util.List;
 
 /**
@@ -21,4 +22,7 @@ public interface IngredientDAO {
     void delete(Ingredient ingredient);
     void delete(List<Ingredient> ingredients);
     List<Ingredient> getIngredients(List<Long> ingredientIds);
+    
+    List<IngredientNutritionInformation> getNutritionInformation(long ingredientId);
+    void loadNutritionInformation(List<IngredientNutritionInformation> nutritionInformation);
 }

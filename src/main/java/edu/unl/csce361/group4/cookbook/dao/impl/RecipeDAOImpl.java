@@ -206,12 +206,14 @@ public class RecipeDAOImpl implements RecipeDAO {
     @Override
     public List<Recipe> getRecipesForCategory(String category, long offset, long count) 
     {
-    	String sql = "SELECT * FROM recipes where category = ?";
+    	String sql = "SELECT * FROM recipes where category = ? LIMIT ?, ?";
     	
     	return (List<Recipe>) dataSource.query(sql, 
     			new Object[]
     			{
-    				category
+                            category,
+                            offset,
+                            count
     			},
     			new BeanPropertyRowMapper(Recipe.class));
     }

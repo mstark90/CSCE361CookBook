@@ -13,8 +13,15 @@
         <jsp:include page="WEB-INF/jsp/css_ref.jsp" />
         <jsp:include page="WEB-INF/jsp/js_ref.jsp" />
         <script type="text/javascript">
-            $(document).ready(function() {
+            $(document).ready(function () {
                 recipeloader.getRecipes();
+                
+                var recipeList = $("#recipe-list");
+                recipeList.scroll(function () {
+                    if (recipeList.scrollTop() + recipeList.height() > recipeList[0].scrollHeight - 50) {
+                        recipeloader.getRecipes();
+                    }
+                });
             })
         </script>
     </head>
@@ -22,7 +29,7 @@
         <jsp:include page="WEB-INF/jsp/header.jsp" />
 
         <div id="recipe-list">
-            
+
         </div>
 
         <jsp:include page="WEB-INF/jsp/footer.jsp" />

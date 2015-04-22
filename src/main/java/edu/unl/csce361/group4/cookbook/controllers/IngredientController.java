@@ -6,6 +6,7 @@
 package edu.unl.csce361.group4.cookbook.controllers;
 
 import edu.unl.csce361.group4.cookbook.Ingredient;
+import edu.unl.csce361.group4.cookbook.IngredientNutritionInformation;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,5 +100,11 @@ public class IngredientController {
     public List<Ingredient> deleteIngredients(@RequestBody LinkedList<Ingredient> ingredients) {
         ingredientDAO.delete(ingredients);
         return ingredients;
+    }
+    
+    @RequestMapping(value = "/loadNutritionInformation", method = RequestMethod.POST, consumes = "application/json")
+    public List<IngredientNutritionInformation> loadNutritionInformation(List<IngredientNutritionInformation> nutritionInformation) {
+        ingredientDAO.loadNutritionInformation(nutritionInformation);
+        return nutritionInformation;
     }
 }

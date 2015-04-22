@@ -4,6 +4,13 @@
     Author     : mstark
 --%>
 
+<%@page import="edu.unl.csce361.group4.cookbook.User"%>
+<%
+
+    User user = (User) session.getAttribute("userInformation");
+    
+%>
+
 <div id="header">
     <span id="cookbook-logo">
      <a href="index.jsp">CookBook</a>
@@ -24,8 +31,35 @@
         <span id="search-submit">
             <img src="_img/search.png" width="25" height="25" />
         </span>
-        <span id="settings-button">
-            <img src="_img/settings.png" width="25" height="25" />
+        <span id="user-info">
+            <% if(user == null) { %>
+            <a href="login_page.html">Login</a>
+            <% 
+                } else {
+            %>
+            <span id="user-settings-button"><%= user.getFullName() %></span>
+            <%
+                }
+            %>
         </span>
     </div>
+    <%
+        if(user != null) {
+    %>
+    <div id="settings-menu">
+        <ul>
+            <li>
+                <a href="create_recipe.jsp">Create Recipe</a>
+            </li>
+            <li>
+                <a href="edit_recipe.jsp?recipe_id=${recipeId}">Edit Recipe</a>
+            </li>
+            <li>
+                <a href="/users/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <%
+        }
+    %>
 </div>

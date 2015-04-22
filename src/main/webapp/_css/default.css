@@ -34,15 +34,16 @@ body {
     float: left;
     line-height: 50px;
     margin-left: 10px;
-    color: black;
+    color: black !important;
 }
 
 #header #cookbook-logo a {
     text-decoration: none;
+    color: black;
 }
 
-#header #cookbook-logo:hover {
-    font-weight: 700;
+#header #cookbook-logo:hover a {
+    color: white;
 }
 
 #header .nav {
@@ -127,15 +128,12 @@ body {
     margin-top: 15px;
     color: black;
     float: left;
-}
-
-.recipe-item .recipe-item-info a {
-    text-decoration: none;
     color: black;
 }
 
-.recipe-item:hover .recipe-item-info a {
-    font-weight: 700;
+.recipe-item:hover {
+    background-color: #50B0FF;
+    cursor: pointer;
 }
 
 #recipe-img-container img {
@@ -265,5 +263,70 @@ body {
         margin-left: 10px;
         display: inline-block;
         max-width: 240px;
+    }
+    
+    #settings-menu {
+        display: none;
+        width: 300px;
+    }
+    
+    #settings-menu ul li {
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid #DDDDDD;
+        margin-left: 10px;
+        margin-right: 10px;
+        box-shadow: 2px 2px 2px #DDD;
+    }
+    
+    #settings-menu.active {
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 50px;
+        z-index: 9;
+        -webkit-animation-name: showSettins;
+        animation-name: showSettings;
+        -webkit-animation-duration: 0.75s;
+        animation-duration: 0.75s;
+    }
+    
+    @-webkit-keyframes showSettings {
+        from {
+            top: -150px;
+        }
+        to {
+            top:52px;
+            z-index: 10;
+        }
+    }
+    
+    @keyframes showSettings {
+        from {
+            top: -150px;
+        }
+        to {
+            top:52px;
+            z-index: 10;
+        }
+    }
+    
+    #user-info {
+        min-width: 40px;
+        padding-left: 10px;
+        line-height: 30px;
+    }
+    
+    #user-info a {
+        text-decoration: none;
+        color: black;
+    }
+    
+    #user-info a:hover {
+        color: white;
+    }
+    
+    #right-container {
+        margin-right: 10px;
     }
 }

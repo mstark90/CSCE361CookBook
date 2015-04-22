@@ -5,10 +5,16 @@
  */
 package edu.unl.csce361.group4.cookbook.controllers;
 
+import edu.unl.csce361.group4.cookbook.Ingredient;
+import edu.unl.csce361.group4.cookbook.IngredientNutritionInformation;
+import edu.unl.csce361.group4.cookbook.MeasuringUnits;
 import edu.unl.csce361.group4.cookbook.Recipe;
+import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
 import edu.unl.csce361.group4.cookbook.dao.RecipeDAO;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -37,6 +43,10 @@ public class RecipeController {
 
     @Autowired
     private RecipeDAO recipeDAO;
+    
+    @Autowired
+    private IngredientDAO ingredientDAO;
+    
     private final SolrServer solrClient;
 
     private final static Logger logger = Logger.getLogger("RecipeController");
@@ -47,14 +57,14 @@ public class RecipeController {
     
     @RequestMapping(value = "all", method = RequestMethod.GET)
     public List<Recipe> getRecipes(@RequestParam(value = "offset", defaultValue = "0") long offset,
-            @RequestParam(value = "query", defaultValue = "10") long count) {
+            @RequestParam(value = "count", defaultValue = "10") long count) {
         return recipeDAO.getRecipesForCategory("", offset, count);
     }
     
     @RequestMapping(value = "category/{category}", method = RequestMethod.GET)
     public List<Recipe> getRecipesByCategory(@PathVariable(value = "category") String category,
             @RequestParam(value = "offset", defaultValue = "0") long offset,
-            @RequestParam(value = "query", defaultValue = "10") long count) {
+            @RequestParam(value = "count", defaultValue = "10") long count) {
         return recipeDAO.getRecipesForCategory(category, offset, count);
     }
 
@@ -113,5 +123,22 @@ public class RecipeController {
             return null;
         }
         return recipeDAO.getRecipe(id);
+    }
+    
+    @RequestMapping(value = "get/id/{recipeId}/nutritionInformation", method = RequestMethod.GET)
+    public Map<String, Float> getNutritionInformation(@PathVariable("recipeId") long recipeId) {
+        Map<String, Float> info = new HashMap<>();
+        
+        Recipe recipe = recipeDAO.getRecipe(recipeId);
+        
+        for(Ingredient ingredient : recipe.getIngredients()) {
+            List<IngredientNutritionInformation> nutritionInformation = ingredientDAO.getNutritionInformation(ingredient.getIngredientId());
+            for(IngredientNutritionInformation ingredientNutrition : nutritionInformation) {
+                float amount = (float)ingredientNutrition.getNutrientAmount() / ingredientNutrition.getServingSize() * ingredient.getServingSize();
+                info.put(ingredientNutrition.getNutrientName(), amount);
+            }
+        }
+        
+        return info;
     }
 }

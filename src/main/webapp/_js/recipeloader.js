@@ -6,27 +6,32 @@
 
 
 var recipeloader = {
-    recipeTemplate: Handlebars.compile("<div class=\"recipe-item\">\n\
+    count: 0,
+    recipeTemplate: Handlebars.compile("<div class=\"recipe-item\" data-recipe-id=\"{{recipeId}}\">\n\
                 <div class=\"recipe-item-img\">\n\
                     <img src=\"{{imageUrl}}\" alt=\"{{recipeName}}\" />\n\
                 </div>\n\
                 <div class=\"recipe-item-info\">\n\
                     <h2>\n\
-                        <a href=\"recipage.jsp?recipeId={{recipeId}}\">{{recipeName}}</a>\n\
+                        {{recipeName}}\n\
                     </h2>\n\
-                    <a href=\"recipage.jsp?recipeId={{recipeId}}\">\n\
-                        <span>\n\
-                        {{description}}\n\
-                        </span>\n\
-                    </a>\n\
+                    <span>\n\
+                    {{description}}\n\
+                    </span>\n\
                 </div>\n\
             </div>"),
     ingredientTemplate: Handlebars.compile("<li>{{servingSize}} {{measuringUnits}} {{ingredientName}}</li>"),
     getRecipes: function() {
-        $.get("rest/recipes/all", function(data) {
+        $.get("rest/recipes/all?offset="+ recipeloader.count, function(data) {
+            recipeloader.count += 10;
             $.each(data, function(index, item) {
-                $("#recipe-list").append(recipeloader.recipeTemplate(item));
+                var recipeElement = $(recipeloader.recipeTemplate(item));
                 
+                recipeElement.click(function() {
+                    window.location = "recipage.jsp?recipeId="+ $(this).attr("data-recipe-id");
+                });
+                
+                $("#recipe-list").append(recipeElement);
             });
         });
     },

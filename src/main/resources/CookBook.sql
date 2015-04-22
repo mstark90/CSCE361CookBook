@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS nutrition_information;
 DROP TABLE IF EXISTS recipe_owners;
 DROP TABLE IF EXISTS favorite_recipes;
 DROP TABLE IF EXISTS recipe_ingredients;
@@ -48,3 +49,11 @@ CREATE TABLE recipe_owners
      FOREIGN KEY (user_id) REFERENCES users (user_id),
      FOREIGN KEY (recipe_id) REFERENCES recipes (recipe_id));
 
+CREATE TABLE nutrition_information
+    (nutrition_information_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+     ingredient_id BIGINT NOT NULL,
+     nutrient_name VARCHAR(255) NOT NULL,
+     nutrient_amount INT NOT NULL,
+     serving_size INT NOT NULL,
+     units VARCHAR(60) NOT NULL,
+     FOREIGN KEY (ingredient_id) REFERENCES ingredients (ingredient_id));

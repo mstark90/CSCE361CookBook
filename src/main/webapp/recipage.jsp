@@ -4,7 +4,13 @@
     Author     : Abak
 --%>
 
+<%@page import="edu.unl.csce361.group4.cookbook.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+
+    User user = (User) session.getAttribute("userInformation");
+    
+%>
 <!DOCTYPE html>
 <html>
     <head>
