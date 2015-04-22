@@ -8,3 +8,5 @@
 <script src="_js/handlebars-v3.0.0.js" type="text/javascript"></script>
 <script src="_js/recipeloader.js" type="text/javascript"></script>
 <script src="_js/typeahead.js" type="text/javascript"></script>
+<script src="_js/recipeeditor.js" type="text/javascript"></script>
+<script src="_js/ingredienteditor.js" type="text/javascript"></script>

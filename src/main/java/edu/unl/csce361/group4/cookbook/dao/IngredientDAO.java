@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface IngredientDAO {
     List<Ingredient> findIngredient(String name, long offset, long count);
+    Ingredient getIngredient(long id, long offset, long count);
     void create(Ingredient ingredient);
     void create(List<Ingredient> ingredients);
     void modify(Ingredient ingredient);

@@ -51,17 +51,29 @@ public class RecipeDAOTest
     @After
     public void tearDown() 
     {
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        Recipe recipe = recipeDAO.getRecipeForName("TESTNAME");
         
+        while (recipe != null)
+        {
+            recipeDAO.delete(recipe);
+            
+            recipe = recipeDAO.getRecipeForName("TESTNAME");
+        }
     }
+    
+    Boolean enableTests = true;
     
     @Test
     public void generalRecipeTest()
     {
+        if (!enableTests) return;
+        
         RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
         IngredientDAO ingredientDAO = (IngredientDAO) context.getBean("IngredientDAOImpl");
         
         Recipe recipe = new Recipe();
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        List<Ingredient> ingredients = new ArrayList<>();
         ingredients.add((Ingredient) ingredientDAO.findIngredient("Pizza", 0, 0).get(0));
         ingredients.add((Ingredient) ingredientDAO.findIngredient("Breakfast", 0, 0).get(0));
         
@@ -78,6 +90,7 @@ public class RecipeDAOTest
         Recipe testRecipe = (Recipe) recipeDAO.getRecipeForName("Breakfast Pizza");
         
         assert(testRecipe.getRecipeName().equals("Breakfast Pizza"));
+        assert(testRecipe.getIngredients() != null || !testRecipe.getIngredients().isEmpty());
         
         testRecipe.setDescription("Pizza & Breakfast");
         recipeDAO.modify(testRecipe);
@@ -104,10 +117,193 @@ public class RecipeDAOTest
     @Test
     public void testDataNotFound()
     {
+        if (!enableTests) return;
+        
         RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
         
         Recipe recipe = recipeDAO.getRecipeForName("notARecipe");
         
         assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromNullObject()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Recipe recipe = null;
+        recipeDAO.create(recipe);
+        
+        //assert(program didn't break)
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties1()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Ingredient ingr1 = new Ingredient();
+        
+        ingr1.setContainerAmount(0);
+        ingr1.setIngredientName("TESTINGREDIENTNAME");
+        ingr1.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr1.setRetailPrice(0);
+        ingr1.setServingSize(0);
+        
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ingr1);
+        
+        Recipe recipe = new Recipe();
+        //recipe.setCategory("TESTCATEGORY");
+        recipe.setDescription("TESTDESCRIPTION");
+        recipe.setImageUrl("TESTURL");
+        recipe.setIngredients(ingredients);
+        recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties2()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Ingredient ingr1 = new Ingredient();
+        
+        ingr1.setContainerAmount(0);
+        ingr1.setIngredientName("TESTINGREDIENTNAME");
+        ingr1.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr1.setRetailPrice(0);
+        ingr1.setServingSize(0);
+        
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ingr1);
+        
+        Recipe recipe = new Recipe();
+        recipe.setCategory("TESTCATEGORY");
+        //recipe.setDescription("TESTDESCRIPTION");
+        recipe.setImageUrl("TESTURL");
+        recipe.setIngredients(ingredients);
+        recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties3()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Ingredient ingr1 = new Ingredient();
+        
+        ingr1.setContainerAmount(0);
+        ingr1.setIngredientName("TESTINGREDIENTNAME");
+        ingr1.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr1.setRetailPrice(0);
+        ingr1.setServingSize(0);
+        
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ingr1);
+        
+        Recipe recipe = new Recipe();
+        recipe.setCategory("TESTCATEGORY");
+        recipe.setDescription("TESTDESCRIPTION");
+        //recipe.setImageUrl("TESTURL");
+        recipe.setIngredients(ingredients);
+        recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties4()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Recipe recipe = new Recipe();
+        recipe.setCategory("TESTCATEGORY");
+        recipe.setDescription("TESTDESCRIPTION");
+        recipe.setImageUrl("TESTURL");
+        //recipe.setIngredients(ingredients);
+        recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties5()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        Ingredient ingr1 = new Ingredient();
+        
+        ingr1.setContainerAmount(0);
+        ingr1.setIngredientName("TESTINGREDIENTNAME");
+        ingr1.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr1.setRetailPrice(0);
+        ingr1.setServingSize(0);
+        
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ingr1);
+        
+        Recipe recipe = new Recipe();
+        recipe.setCategory("TESTCATEGORY");
+        recipe.setDescription("TESTDESCRIPTION");
+        recipe.setImageUrl("TESTURL");
+        recipe.setIngredients(ingredients);
+        //recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithEmptyIngredients()
+    {
+        if (!enableTests) return;
+        
+        RecipeDAO recipeDAO = (RecipeDAO) context.getBean("RecipeDAOImpl");
+        
+        List<Ingredient> ingredients = new ArrayList<>();
+        
+        Recipe recipe = new Recipe();
+        recipe.setCategory("TESTCATEGORY");
+        recipe.setDescription("TESTDESCRIPTION");
+        recipe.setImageUrl("TESTURL");
+        recipe.setIngredients(ingredients);
+        recipe.setRecipeName("TESTNAME");
+        
+        recipeDAO.create(recipe);
+        
+        recipe = recipeDAO.getRecipeForName("TESTNAME");
+        assert(recipe != null);
+        
+        recipeDAO.delete(recipe);
     }
 }

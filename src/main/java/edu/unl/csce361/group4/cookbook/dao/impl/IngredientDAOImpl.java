@@ -42,13 +42,20 @@ public class IngredientDAOImpl implements IngredientDAO {
         this.dataSource = new JdbcTemplate(dataSource);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List<Ingredient> findIngredient(String name, long offset, long count) {
-        String sql = "SELECT * FROM ingredients WHERE ingredient_name = ?";
-
-        List<Ingredient> ingredients = dataSource.query(sql,
-                new Object[]{
+    public List<Ingredient> findIngredient(String name, long offset, long count) 
+    {
+        if (name == null || name.isEmpty())
+        {
+            return null;
+        }
+        
+    	String sql = "SELECT * FROM ingredients WHERE ingredient_name = ?";
+    	
+        List<Ingredient> ingredients = dataSource.query(sql, 
+                new Object[]
+                {
                     name
                 },
                 new BeanPropertyRowMapper(Ingredient.class));
@@ -57,7 +64,16 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     @Override
-    public void create(final Ingredient ingredient) {
+    public void create(final Ingredient ingredient) 
+    {
+        if (ingredient == null
+               || ingredient.getIngredientName() == null || ingredient.getIngredientName().isEmpty()
+               || ingredient.getMeasuringUnits() == null)               
+        {
+            return;
+        }
+        
+        
         KeyHolder holder = new GeneratedKeyHolder();
 
         dataSource.update(new PreparedStatementCreator() {
@@ -83,113 +99,148 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     @Override
-    public void create(List<Ingredient> ingredients) {
-        for (Ingredient ingr : ingredients) {
+    public void create(List<Ingredient> ingredients) 
+    {
+        if (ingredients == null)
+        {        
+            return;
+        }
+        
+        for (Ingredient ingr : ingredients)
+        {
             this.create(ingr);
         }
     }
 
     @Override
-    public void modify(Ingredient ingredient) {
-        String sql = "UPDATE ingredients SET ingredient_name = ?, measuring_units = ?, "
-                + "retail_price = ?, serving_size = ?, container_amount = ? "
-                + "WHERE ingredient_id = ?";
-
-        dataSource.update(sql, new Object[]{
-            ingredient.getIngredientName(),
-            ingredient.getMeasuringUnits().toString(),
-            ingredient.getRetailPrice(),
-            ingredient.getServingSize(),
-            ingredient.getContainerAmount(),
-            ingredient.getIngredientId()
-        });
-    }
-
-    @Override
-    public void modify(List<Ingredient> ingredients) {
-        for (Ingredient ingr : ingredients) {
-            this.modify(ingr);
+    public void modify(Ingredient ingredient) 
+    {
+        if (ingredient == null
+               || ingredient.getIngredientName() == null || ingredient.getIngredientName().isEmpty()
+               || ingredient.getMeasuringUnits() == null)               
+        {
+            return;
         }
-    }
+        
+    	String sql = "UPDATE ingredients SET ingredient_name = ?, measuring_units = ?, "
+    			+ "retail_price = ?, serving_size = ?, container_amount = ? "
+    			+ "WHERE ingredient_id = ?";
+    	
+    	dataSource.update(sql, new Object[]
+    		{
+                    ingredient.getIngredientName(),
+                    ingredient.getMeasuringUnits().toString(),
+                    ingredient.getRetailPrice(),
+                    ingredient.getServingSize(),
+                    ingredient.getContainerAmount(),
 
-    @Override
-    public void delete(Ingredient ingredient) {
-        String sql = "DELETE FROM ingredients WHERE ingredient_id = ?";
-
-        dataSource.update(sql,
-                new Object[]{
                     ingredient.getIngredientId()
-                });
+    		});
     }
 
     @Override
-    public void delete(List<Ingredient> ingredients) {
-        for (Ingredient ingr : ingredients) {
-            this.delete(ingr);
+    public void modify(List<Ingredient> ingredients) 
+    {
+        if (ingredients == null)
+        {
+            return;
         }
+        
+    	for (Ingredient ingr : ingredients)
+    	{
+            this.modify(ingr);
+    	}
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public List<Ingredient> getIngredients(List<Long> ingredientIds) {
-        List<Ingredient> ingredients = new ArrayList<>();
+    public void delete(Ingredient ingredient) 
+    {
+        if (ingredient == null || ingredient.getIngredientId() == 0)
+        {
+            return;
+        }
+        
+        String sql = "DELETE FROM recipe_ingredients WHERE ingredient_id = ?";
+        
+        dataSource.update(sql, 
+    		new Object[] 
+    		{
+                    ingredient.getIngredientId()
+    		});
+        
+    	sql = "DELETE FROM ingredients WHERE ingredient_id = ?";
+    	
+    	dataSource.update(sql, 
+    		new Object[] 
+    		{
+                    ingredient.getIngredientId()
+    		});
+    }
 
-        for (Long id : ingredientIds) {
+    @Override
+    public void delete(List<Ingredient> ingredients) 
+    {
+        if (ingredients == null || ingredients.isEmpty())
+        {
+            return;
+        }
+        
+    	for (Ingredient ingr : ingredients)
+    	{
+            this.delete(ingr);
+    	}
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public List<Ingredient> getIngredients(List<Long> ingredientIds) 
+    {
+        if (ingredientIds == null || ingredientIds.isEmpty())
+        {
+            return null;
+        }
+        
+    	List<Ingredient> ingredients = new ArrayList<>();
+    	
+    	for (Long id : ingredientIds)
+    	{
             String sql = "SELECT * FROM ingredients WHERE ingredient_id = ?";
 
             ingredients.add(
-                    (Ingredient) dataSource.query(sql,
-                            new Object[]{
-                                id
-                            },
-                            new BeanPropertyRowMapper(Ingredient.class)).get(0));
+                    (Ingredient) dataSource.query(sql, 
+                    new Object[]
+                    {
+                        id
+                    },
+                    new BeanPropertyRowMapper(Ingredient.class)).get(0));
+    	}
+    	
+    	return ingredients;
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public Ingredient getIngredient(long ingredientId, long offset, long count)
+    {
+        if (ingredientId == 0)
+        {
+            return null;
         }
+        
+        String sql = "SELECT * FROM ingredients WHERE ingredient_id = ?";
 
-        return ingredients;
-    }
-
-    @Override
-    public List<IngredientNutritionInformation> getNutritionInformation(long ingredientId) {
-        return dataSource.query("SELECT nutrition_information_id, ingredient_id, nutrient_name,"
-                + " nutrient_amount, serving_size, units FROM nutrition_information WHERE ingredient_id = ?", new RowMapper<IngredientNutritionInformation>() {
-
-                    @Override
-                    public IngredientNutritionInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        IngredientNutritionInformation information = new IngredientNutritionInformation();
-                        
-                        information.setIngredientNutritionId(rs.getLong("nutrition_information_id"));
-                        information.setIngredientId(rs.getLong("ingredient_id"));
-                        information.setNutrientName(rs.getString("nutrient_name"));
-                        information.setNutrientAmount(rs.getInt("nutrient_amount"));
-                        information.setServingSize(rs.getInt("serving_size"));
-                        information.setUnits(MeasuringUnits.valueOf(rs.getString("units")));
-                        
-                        return information;
-                    }
-                    
-                }, ingredientId);
-    }
-
-    @Override
-    public void loadNutritionInformation(final List<IngredientNutritionInformation> nutritionInformation) {
-        dataSource.batchUpdate("INSERT INTO nutrition_information SET ingredient_id = ?, nutrient_name = ?,"
-                + " nutrient_amount = ?, serving_size = ?, units = ?", new BatchPreparedStatementSetter() {
-
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        IngredientNutritionInformation ingredientNutritionInformation = nutritionInformation.get(i);
-
-                        ps.setLong(1, ingredientNutritionInformation.getIngredientId());
-                        ps.setString(2, ingredientNutritionInformation.getNutrientName());
-                        ps.setInt(3, ingredientNutritionInformation.getNutrientAmount());
-                        ps.setInt(4, ingredientNutritionInformation.getServingSize());
-                        ps.setString(5, ingredientNutritionInformation.getUnits().toString());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return nutritionInformation.size();
-                    }
-                });
+        Ingredient ingr = (Ingredient) dataSource.queryForObject(sql, 
+                new Object[]
+                {
+                    ingredientId
+                },
+                new BeanPropertyRowMapper(Ingredient.class));
+    	
+        if (ingr.getIngredientId() == 0)
+        {
+            return null;
+        }
+        
+    	return ingr;
     }
 }
