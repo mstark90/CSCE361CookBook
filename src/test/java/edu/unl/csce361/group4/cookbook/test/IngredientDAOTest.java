@@ -8,6 +8,7 @@ package edu.unl.csce361.group4.cookbook.test;
 import edu.unl.csce361.group4.cookbook.Ingredient;
 import edu.unl.csce361.group4.cookbook.MeasuringUnits;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.lang.Long;
 
 /**
  *
@@ -42,13 +44,16 @@ public class IngredientDAOTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() 
+    {
+        
     }
-
+    Boolean enableTests = true;
     @Test
     public void generalIngredientTest() 
     {
-
+        if (!enableTests) return;
+        
         IngredientDAO ingredientDAO = (IngredientDAO) context.getBean("IngredientDAOImpl");
 
         Ingredient ingr = (Ingredient) ingredientDAO.findIngredient("Beer", 0, 0).get(0);
@@ -78,17 +83,71 @@ public class IngredientDAOTest {
         assert(ingr.getContainerAmount() > 0.6 && ingr.getContainerAmount() < 0.8);
     }
         
+    @Test
     public void testDataNotFound()
     {
+        if (!enableTests) return;
+        
         IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
-        List<Ingredient> ingredientList = ingredientDAO.findIngredient("tacoSauce", 0, 0);
+        List<Ingredient> ingredientList = ingredientDAO.findIngredient("NOINGREDIENTSHOULDHAVETHISNAME", 0, 0);
         
         assert(ingredientList.isEmpty());
     }
     
     @Test
+    public void testCreateFromNullObject()
+    {
+        if (!enableTests) return;
+        
+        IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
+        
+        ingredientDAO.create((Ingredient)null);        
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties1()
+    {
+        if (!enableTests) return;
+        IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
+        Ingredient ingr = new Ingredient();
+        
+        ingr.setContainerAmount((float) 0.3);
+        ingr.setIngredientName("testIngredient");
+        //ingr.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr.setRetailPrice((float) 10.2);
+        ingr.setServingSize(1);
+        
+        ingredientDAO.create(ingr);
+        
+        List<Ingredient> ingrList = ingredientDAO.findIngredient("testIngredient", 0, 0);
+        
+        assert(ingrList == null || ingrList.isEmpty() || ingrList.get(0) == null);
+    }
+    
+    @Test
+    public void testCreateFromObjectWithNullProperties2()
+    {
+        if (!enableTests) return;
+        IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
+        Ingredient ingr = new Ingredient();
+        
+        ingr.setContainerAmount((float) 0.3);
+        //ingr.setIngredientName("testIngredient");
+        ingr.setMeasuringUnits(MeasuringUnits.POUNDS);
+        ingr.setRetailPrice((float) 10.2);
+        ingr.setServingSize(1);
+        
+        ingredientDAO.create(ingr);
+        
+        List<Ingredient> ingrList = ingredientDAO.findIngredient("testIngredient", 0, 0);
+        
+        assert(ingrList == null || ingrList.isEmpty() || ingrList.get(0) == null);
+    }
+    
+    @Test
     public void testDemo()
     {
+        if (!enableTests) return;
         IngredientDAO ingredientDAO = (IngredientDAO)context.getBean("IngredientDAOImpl");
         
         
