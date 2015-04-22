@@ -19,6 +19,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,18 +82,21 @@ public class RecipeController {
     }
 
     @RequestMapping(value = "createRecipe", method = RequestMethod.POST, consumes = "application/json")
+    @PreAuthorize("isAuthenticated()")
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         recipeDAO.create(recipe);
         return recipe;
     }
 
     @RequestMapping(value = "modifyRecipe", method = RequestMethod.POST, consumes = "application/json")
+    @PreAuthorize("isAuthenticated()")
     public Recipe modifyRecipe(@RequestBody Recipe recipe) {
         recipeDAO.modify(recipe);
         return recipe;
     }
 
     @RequestMapping(value = "deleteRecipe", method = RequestMethod.POST, consumes = "application/json")
+    @PreAuthorize("isAuthenticated()")
     public Recipe deleteRecipe(@RequestBody Recipe recipe) {
         recipeDAO.delete(recipe);
         return recipe;

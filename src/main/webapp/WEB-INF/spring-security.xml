@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+    
+    <security:http auto-config="true" use-expressions="true">
+        <security:form-login login-page="/users/loginForm" authentication-failure-url="/users/loginForm?error=true"
+                    login-processing-url="/users/j_security_check"/>
+        <security:http-basic/>
+        <security:logout logout-url="/users/logout"/>
+        <security:remember-me user-service-ref="userService"
+                              key="e37f4b31-0c45-11dd-bd0b-0800200c9a66"
+                              use-secure-cookie="true" />
+    </security:http>
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:password-encoder hash="bcrypt" />
+            <security:jdbc-user-service id="userService"
+                                        data-source-ref="dataSource"
+                                        users-by-username-query=
+		    "SELECT username, password, 1 FROM users WHERE user_name = ?" />
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>
