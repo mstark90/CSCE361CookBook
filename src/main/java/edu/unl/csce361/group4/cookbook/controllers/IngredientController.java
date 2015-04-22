@@ -20,6 +20,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,10 +44,35 @@ public class IngredientController {
         solrClient = new HttpSolrServer("http://localhost:8983/solr/cookbook");
     }
     
+    @RequestMapping(value = "/get/id/{ingredientId}", method = RequestMethod.GET)
+    public Ingredient getIngredient(@PathVariable("ingredientId") long ingredientId, 
+            @RequestParam(value = "offset", defaultValue = "0") long offset,
+            @RequestParam(value = "count", defaultValue = "10") long count) 
+    {
+        return ingredientDAO.getIngredient(ingredientId, offset, count);
+    }
+    
+    @RequestMapping(value = "/get/name/{ingredientName}", method = RequestMethod.GET)
+    public Ingredient getIngredient(@PathVariable("ingredientName") String ingredientName, 
+            @RequestParam(value = "offset", defaultValue = "0") long offset,
+            @RequestParam(value = "count", defaultValue = "10") long count) 
+    {
+        List<Ingredient> list = null;
+        
+        list = ingredientDAO.findIngredient(ingredientName, offset, count);
+        
+        if (list == null || list.isEmpty())
+        {            
+            return null;
+        }
+        
+        return list.get(0);
+    }    
+    
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public List<Ingredient> findIngredients(@RequestParam("query") String query,
             @RequestParam(value = "offset", defaultValue = "0") long offset,
-            @RequestParam(value = "query", defaultValue = "10") long count) {
+            @RequestParam(value = "count", defaultValue = "10") long count) {
         List<Long> ingredients = new LinkedList<>();
         
         try {
