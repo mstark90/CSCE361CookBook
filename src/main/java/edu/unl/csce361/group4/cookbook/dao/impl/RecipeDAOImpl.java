@@ -18,6 +18,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -41,6 +42,11 @@ public class RecipeDAOImpl implements RecipeDAO {
 	@Override
     public Recipe getRecipe(long recipeId) 
     {
+        if (recipeId == 0)
+        {
+            return null;
+        }
+        
         String sql = "SELECT * FROM recipes WHERE recipe_id = ?";
         
         List<Recipe> recipes = dataSource.query(sql,
@@ -66,6 +72,17 @@ public class RecipeDAOImpl implements RecipeDAO {
     @Override
     public void create(final Recipe recipe) 
     {
+        if (recipe == null 
+                || recipe.getRecipeName() == null || recipe.getRecipeName().isEmpty()
+                || recipe.getDescription() == null || recipe.getDescription().isEmpty()
+                || recipe.getCategory() == null || recipe.getCategory().isEmpty()
+                || recipe.getImageUrl() == null /*|| recipe.getImageUrl().isEmpty()*/
+                || recipe.getIngredients() == null
+                )
+        {
+            return;
+        }
+        
     	//Add recipe to recipe table
         KeyHolder holder = new GeneratedKeyHolder();
         
@@ -128,6 +145,17 @@ public class RecipeDAOImpl implements RecipeDAO {
     @Override
     public void modify(Recipe recipe) //Not required for Phase 1
     {
+        if (recipe == null 
+                || recipe.getRecipeName() == null || recipe.getRecipeName().isEmpty()
+                || recipe.getDescription() == null || recipe.getDescription().isEmpty()
+                || recipe.getCategory() == null || recipe.getCategory().isEmpty()
+                || recipe.getImageUrl() == null /*|| recipe.getImageUrl().isEmpty()*/
+                /*|| recipe.getIngredients() == null /* If no ingredients specified, leave unmodified **/ 
+                )
+        {
+            return;
+        }
+        
         //Modify recipe table
     	String sql = "UPDATE recipes "
     			+ "SET recipe_name = ?, description = ?, category = ?, image_url = ? "
@@ -143,11 +171,56 @@ public class RecipeDAOImpl implements RecipeDAO {
     				recipe.getRecipeId()
     			});
     	
-        if (recipe.getIngredients() == null || recipe.getIngredients().isEmpty())
+        if (recipe.getIngredients() == null) /* || recipe.getIngredients().isEmpty()) /* Have to be able to delete the list */
         {
-            return;
+            return; //Don't need to update ingredients
         }
+        
+        //TODO: Make this implementation better (doesn't delete all items and then re-add them)
+        
+        //Modify join table to
+        for (Ingredient item : recipe.getIngredients())
+    	{
+            sql = "SELECT recipe_ingredient_id FROM recipe_ingredients WHERE recipe_id = ? and ingredient_id = ?";
             
+            Long recipe_ingredient_id = (long)0;
+            try
+            {                   
+                recipe_ingredient_id = dataSource.queryForObject(sql, 
+                                new Object[]
+                                {
+                                        recipe.getRecipeId(),
+                                        item.getIngredientId()
+                                }, 
+                                Long.class);
+            } 
+            catch (EmptyResultDataAccessException erdae){}
+
+            if ( !(recipe_ingredient_id == null || recipe_ingredient_id == 0))
+            {
+                sql = "DELETE FROM recipe_ingredients where recipe_id = ?";
+                dataSource.update(sql, 
+                            new Object[]
+                            {
+                                recipe.getRecipeId()
+                            });
+            } 
+            
+            // Insert back into DB
+            sql = "INSERT INTO recipe_ingredients "
+                + "(recipe_id, ingredient_id) "
+                + "VALUES "
+                + "(?, ?)";
+    			
+            dataSource.update(sql, 
+                            new Object[]
+                            {
+                                recipe.getRecipeId(),
+                                item.getIngredientId()
+                            });
+        }
+        
+        /*
     	//Modify join table to
     	for (Ingredient item : recipe.getIngredients())
     	{
@@ -165,10 +238,10 @@ public class RecipeDAOImpl implements RecipeDAO {
     			sql = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)";
     			dataSource.update(sql, 
     					new Object[]
-						{
-    						recipe.getRecipeId(),
-    						item.getIngredientId()
-						});
+                                        {
+                                            recipe.getRecipeId(),
+                                            item.getIngredientId()
+                                        });
     		}
     		else
     		{
@@ -178,24 +251,33 @@ public class RecipeDAOImpl implements RecipeDAO {
     			
     			dataSource.update(sql, 
     					new Object[]
-						{
-    						recipe.getRecipeId(),
-    						item.getIngredientId(),
-    						recipe_ingredient_id
-    					
-						});
+                                        {
+                                            recipe.getRecipeId(),
+                                            item.getIngredientId(),
+                                            recipe_ingredient_id
+                                        });
     		}
-    	}
+    	}*/
     }
 
     @Override
     public void delete(Recipe recipe) 
     {
+        if (recipe == null
+                || recipe.getRecipeId() == 0
+                )
+        {
+            return;
+        }
     	//Delete all referencing entries in the join table
     	String sql = "DELETE FROM recipe_ingredients WHERE recipe_id = ?";
     	
     	dataSource.update(sql, new Object[]{ recipe.getRecipeId() });
-    	
+        
+        sql = "DELETE FROM favorite_recipes WHERE recipe_id = ?";
+        
+    	dataSource.update(sql, new Object[]{ recipe.getRecipeId() });
+        
     	//Delete recipe
     	sql = "DELETE FROM recipes WHERE recipe_id = ?";
     	
@@ -206,9 +288,21 @@ public class RecipeDAOImpl implements RecipeDAO {
     @Override
     public List<Recipe> getRecipesForCategory(String category, long offset, long count) 
     {
+        if (category == null)
+        {
+            return null;
+        }
+        
     	String sql = "SELECT * FROM recipes where category = ?";
-    	
-    	return (List<Recipe>) dataSource.query(sql, 
+        if (category.isEmpty())
+        {
+            sql = "SELECT * FROM recipes";
+            
+            return (List<Recipe>) dataSource.query(sql, 
+    			new BeanPropertyRowMapper(Recipe.class));
+        }
+
+        return (List<Recipe>) dataSource.query(sql, 
     			new Object[]
     			{
     				category
@@ -220,6 +314,11 @@ public class RecipeDAOImpl implements RecipeDAO {
     @Override
     public Recipe getRecipeForName(String recipeName) 
     {
+        if (recipeName == null || recipeName.isEmpty())
+        {
+            return null;
+        }
+        
     	String sql = "SELECT * FROM recipes WHERE recipe_name = ?";
         
         List<Recipe> recipes = dataSource.query(sql,
@@ -237,7 +336,14 @@ public class RecipeDAOImpl implements RecipeDAO {
                 + " ON recipe_ingredients.ingredient_id = ingredients.ingredient_id"
                 + " WHERE recipe_id = ?";
         
-        recipe.setIngredients(dataSource.query(sql, new Object[]{recipe.getRecipeId() }, new BeanPropertyRowMapper(Ingredient.class)));
+        recipe.setIngredients(
+                (List<Ingredient>)dataSource.query(
+                        sql, 
+                        new Object[]
+                        {
+                            recipe.getRecipeId() 
+                        }, 
+                        new BeanPropertyRowMapper(Ingredient.class)));
         
         return recipe;
     }
