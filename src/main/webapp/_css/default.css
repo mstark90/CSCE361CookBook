@@ -18,6 +18,32 @@ body {
     height: calc(100% - 50px);
 }
 
+#save-button 
+{
+    float: right;
+}
+
+#post-button
+{
+    float: right;
+}
+
+textarea
+{
+    resize: none;
+}
+
+#add-ingredient-container li
+{
+    list-style-type: none;
+}
+
+#description-container
+{
+    height: 100%;
+    width: 100%;
+}
+
 #header {
     height: 50px;
     width: 100%;
