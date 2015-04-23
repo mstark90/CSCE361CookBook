@@ -15,6 +15,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 recipeloader.getRecipe(<%= request.getParameter("recipeId") %>);
+                $("#reciEditPage-link").attr("href", "recipeEditPage.jsp?recipeId=" + <%= request.getParameter("recipeId") %>);
             });
         </script>
     </head>
@@ -42,6 +43,9 @@
                     <div id="nutrition-container">Coming soon</div>
                 </div>
             </div>
+        </div>
+        <div id="bottom-links">
+            <a id="reciEditPage-link" href="">Recipe Edit Page</a>
         </div>
 
         <jsp:include page="WEB-INF/jsp/footer.jsp" />
