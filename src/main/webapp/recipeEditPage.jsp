@@ -16,6 +16,8 @@
             $(document).ready(function() {
                 recipeEditor.getRecipe(<%= request.getParameter("recipeId") %>);
                 $("#saveStatus").hide();
+                $("#reciPage-link").attr("href", "recipage.jsp?recipeId=" + <%= request.getParameter("recipeId") %>);
+                $("#ingrPage-link").attr("href", "ingredientEdit.jsp");
             });
         </script>
     </head>
@@ -54,6 +56,10 @@
                 <div id="saveStatus">Failed to save</div>
             </div>
             
+        </div>
+        <div id="bottom-links">
+            <a id="reciPage-link" href="">Recipe Page</a>   
+            <a id="ingrPage-link" href="">Ingredient Edit Page</a>  
         </div>
         
         <jsp:include page="WEB-INF/jsp/footer.jsp" />
