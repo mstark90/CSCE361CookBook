@@ -7,6 +7,7 @@ package edu.unl.csce361.group4.cookbook.controllers;
 
 import edu.unl.csce361.group4.cookbook.User;
 import edu.unl.csce361.group4.cookbook.dao.UserDAO;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpRequestResponseHolder;
+import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,7 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
     
+    @Autowired
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
     
@@ -51,11 +55,21 @@ public class UserController {
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(auth);
-            securityContextRepository.saveContext(context, request, response);
-            return userDAO.login(userName, password);
+            
+            User userInfo = userDAO.getUserInfo(userName);
+            
+            request.getSession(true).setAttribute("userInformation", userInfo);
+            return userInfo;
         } catch(BadCredentialsException e) {
             return null;
         }
+    }
+    
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public void logoutUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().removeAttribute("userInformation");
+        SecurityContextHolder.clearContext();
+        response.sendRedirect(request.getContextPath() +"/index.jsp");
     }
     
     @RequestMapping(value = "/createUser", method = RequestMethod.POST, consumes="application/json")

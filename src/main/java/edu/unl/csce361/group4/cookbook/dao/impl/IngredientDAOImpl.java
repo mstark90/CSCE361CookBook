@@ -243,4 +243,49 @@ public class IngredientDAOImpl implements IngredientDAO {
         
     	return ingr;
     }
+
+    @Override
+    public List<IngredientNutritionInformation> getNutritionInformation(long ingredientId) {
+        return dataSource.query("SELECT * FROM nutrient_information WHERE ingredient_id = ?",
+                new RowMapper<IngredientNutritionInformation>() {
+
+            @Override
+            public IngredientNutritionInformation mapRow(ResultSet rs, int rowNum) throws SQLException {
+                IngredientNutritionInformation nutritionInformation = new IngredientNutritionInformation();
+                
+                nutritionInformation.setIngredientNutritionId(rs.getLong("nutrition_information_id"));
+                nutritionInformation.setIngredientId(rs.getLong("ingredient_id"));
+                nutritionInformation.setNutrientName(rs.getString("nutrient_name"));
+                nutritionInformation.setNutrientAmount(rs.getInt("nutrient_amount"));
+                nutritionInformation.setServingSize(rs.getInt("serving_size"));
+                nutritionInformation.setUnits(MeasuringUnits.valueOf(rs.getString("units")));
+                
+                return nutritionInformation;
+            }
+        }, ingredientId);
+    }
+
+    @Override
+    public void loadNutritionInformation(final List<IngredientNutritionInformation> nutritionInformation) {
+        dataSource.batchUpdate("INSERT INTO nutrition_information SET ingredient_id = ?,"
+                + " nutrient_name = ?, nutrient_amount = ?, serving_size = ?,"
+                + " units = ?", new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                IngredientNutritionInformation info = nutritionInformation.get(i);
+                
+                ps.setLong(1, info.getIngredientId());
+                ps.setString(2, info.getNutrientName());
+                ps.setInt(3, info.getNutrientAmount());
+                ps.setInt(4, info.getServingSize());
+                ps.setString(5, info.getUnits().toString());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return nutritionInformation.size();
+            }
+        });
+    }
 }

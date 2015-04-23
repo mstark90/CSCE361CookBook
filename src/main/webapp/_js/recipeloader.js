@@ -73,4 +73,13 @@ $(document).ready(function() {
           suggestion: Handlebars.compile("<div class=\"search-suggestion\"><a href=\"recipage.jsp?recipeId={{recipeId}}\"><img class=\"search-image\" src=\"{{imageUrl}}\" /><span>{{recipeName}}</span></a></div>")
         }
       });
+    
+    $("#user-settings-button").click(function() {
+        if($("#settings-menu").hasClass("active")) {
+            $("#settings-menu").removeClass("active");
+            $("#settings-menu").addClass("inactive");
+        } else {
+            $("#settings-menu").addClass("active");
+        }
+    })
 });

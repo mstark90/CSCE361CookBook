@@ -214,7 +214,9 @@ textarea
     }
     
     #header #right-container {
-        width: 400px;
+        min-width: 400px;
+        width: 35%;
+        display: block;
     }
 
     #header #search-query {
@@ -294,15 +296,30 @@ textarea
     #settings-menu {
         display: none;
         width: 300px;
+        height: 175px;
     }
     
     #settings-menu ul li {
-        height: 50px;
+        line-height: 50px;
         width: 100%;
         border-bottom: 1px solid #DDDDDD;
+        list-style: none;
+    }
+    
+    #settings-menu ul li a {
         margin-left: 10px;
-        margin-right: 10px;
-        box-shadow: 2px 2px 2px #DDD;
+        text-decoration: none;
+        color: black;
+    }
+    
+    #settings-menu ul li a:hover {
+        margin-left: 10px;
+        text-decoration: none;
+        color: black;
+    }
+    
+    #settings-menu ul li:last-child {
+        border-bottom: none;
     }
     
     #settings-menu.active {
@@ -311,6 +328,8 @@ textarea
         right: 10px;
         top: 50px;
         z-index: 9;
+        background-color: #2185FF;
+        box-shadow: 2px 2px 2px #DDD;
         -webkit-animation-name: showSettins;
         animation-name: showSettings;
         -webkit-animation-duration: 0.75s;
@@ -354,5 +373,9 @@ textarea
     
     #right-container {
         margin-right: 10px;
+    }
+    
+    #user-settings-button {
+        cursor: pointer;
     }
 }

@@ -5,15 +5,18 @@
  */
 package edu.unl.csce361.group4.cookbook;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author mstark
  */
-public class User {
+public class User implements Serializable {
     private long userId;
-    private String userName, fullName, password, emailAddress;
+    private String userName, fullName;
+    private String password;
+    private String emailAddress;
     private List<Recipe> favoriteRecipes;
     private String oauthToken, oauthSecret;
 

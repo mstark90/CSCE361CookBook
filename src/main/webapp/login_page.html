@@ -13,10 +13,10 @@
 	<section class="container">
 		<div class="login">
 			<h1>Login to CookBook</h1>
-			<form name="login">
-				<p><input type="text" name="username" value="" placeholder="Username"></p>
-				<p><input type="password" name="password" value="" placeholder="Password"></p>
-				<p class="submit"><input type="button" value="Login" onclick="validate(this.form)"></p>
+			<form name="login" method="post">
+				<p><input type="text" name="username" id="username" value="" placeholder="Username"></p>
+				<p><input type="password" name="password" id="password" value="" placeholder="Password"></p>
+				<p class="submit"><input type="button" value="Login" onclick="validate()"></p>
 			</form>
 		</div>
 	</section>

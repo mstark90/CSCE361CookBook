@@ -1,18 +1,17 @@
-function validate(form)
+function validate()
 {
-	var username = form.username.value;
-	var password = form.password.value;
+	var username = $("#username").val();
+	var password = $("#password").val();
 	
-	var arr = {user_name: username, password: password};
+	var arr = "username="+ username +"&password="+ password;
 	$.ajax({
-		url: 'localhost:8080/CookBook/rest/users/login',
+		url: 'rest/users/login',
 		type: 'POST',
-		data: JSON.stringify(arr),
-		contentType: 'application/json; charset=utf-8',
-		dataType: 'json',
-		async: false,
-		success: function(msg) {
-			alert(msg);
+		data: arr,
+                contentType: "application/x-www-form-urlencoded",
+		async: true,
+		success: function(user) {
+                    window.location = "index.jsp";
 		}
 	});
 }	

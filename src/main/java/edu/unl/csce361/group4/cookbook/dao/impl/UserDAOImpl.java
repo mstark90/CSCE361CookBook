@@ -39,13 +39,12 @@ public class UserDAOImpl implements UserDAO {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public User login(String userName, String password) {
-        String sql = "SELECT * FROM users WHERE user_name = ? and password = ?";
+    public User getUserInfo(String userName) {
+        String sql = "SELECT user_id, user_name, email_address, full_name FROM users WHERE user_name = ?";
 
         List<User> users = dataSource.query(sql,
                 new Object[]{
-                    userName,
-                    password
+                    userName
                 },
                 new BeanPropertyRowMapper(User.class));
 

@@ -12,7 +12,7 @@ import edu.unl.csce361.group4.cookbook.User;
  * @author mstark
  */
 public interface UserDAO {
-    User login(String userName, String password);
+    User getUserInfo(String userName);
     void create(User user);
     void modify(User user);
     void delete(User user);

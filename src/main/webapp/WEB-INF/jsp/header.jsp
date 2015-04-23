@@ -49,13 +49,13 @@
     <div id="settings-menu">
         <ul>
             <li>
-                <a href="create_recipe.jsp">Create Recipe</a>
+                <a href="recipeEditPage.jsp?recipe_id=0">Create Recipe</a>
             </li>
             <li>
-                <a href="edit_recipe.jsp?recipe_id=${recipeId}">Edit Recipe</a>
+                <a href="recipeEditPage.jsp?recipe_id=${recipeId}">Edit Recipe</a>
             </li>
             <li>
-                <a href="/users/logout">Logout</a>
+                <a href="rest/users/logout">Logout</a>
             </li>
         </ul>
     </div>

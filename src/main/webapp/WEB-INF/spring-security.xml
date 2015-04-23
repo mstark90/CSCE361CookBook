@@ -15,13 +15,14 @@
                               key="e37f4b31-0c45-11dd-bd0b-0800200c9a66"
                               use-secure-cookie="true" />
     </security:http>
-    <security:authentication-manager>
+    <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider>
             <security:password-encoder hash="bcrypt" />
             <security:jdbc-user-service id="userService"
                                         data-source-ref="dataSource"
                                         users-by-username-query=
-		    "SELECT username, password, 1 FROM users WHERE user_name = ?" />
+		    "SELECT user_name, password, 1 FROM users WHERE user_name = ?"
+                    authorities-by-username-query="SELECT user_name, 'ROLE_USER' FROM users WHERE user_name = ?" />
         </security:authentication-provider>
     </security:authentication-manager>
 
