@@ -81,7 +81,7 @@ textarea
 }
 
 #header #right-container {
-    width: 50px;
+    width: 90px;
     float: right;
     margin-top: 10px;
 }
@@ -105,6 +105,7 @@ textarea
     background-color: rgba(0, 0, 0, 0);
     line-height: 30px;
     height: 32px;
+    float: left;
 }
 
 #header #settings-button {
@@ -124,10 +125,11 @@ textarea
     width: 100%;
     line-height: 50px;
 }
+
 .recipe-item {
     border-bottom: 1px solid #E6E6E6;
     color: black;
-    min-height: 160px;
+    min-height: 200px;
     width: 100%;
 }
 
@@ -196,6 +198,90 @@ textarea
     background-color: rgba(0, 0, 0, 0.0) !important;
 }
 
+#settings-menu {
+    display: none;
+    width: 300px;
+    height: 175px;
+}
+
+#settings-menu ul li {
+    line-height: 50px;
+    width: 100%;
+    border-bottom: 1px solid #DDDDDD;
+    list-style: none;
+}
+
+#settings-menu ul li a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+#settings-menu ul li a:hover {
+    margin-left: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+#settings-menu ul li:last-child {
+    border-bottom: none;
+}
+
+#settings-menu.active {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    z-index: 7;
+    background-color: #2185FF;
+    box-shadow: 2px 2px 2px #DDD;
+    -webkit-animation-name: showSettins;
+    animation-name: showSettings;
+    -webkit-animation-duration: 0.75s;
+    animation-duration: 0.75s;
+}
+
+@-webkit-keyframes showSettings {
+    from {
+        top: -150px;
+    }
+    to {
+        top:52px;
+        z-index: 9;
+    }
+}
+
+@keyframes showSettings {
+    from {
+        top: -150px;
+    }
+    to {
+        top:52px;
+        z-index: 9;
+    }
+}
+
+#user-settings-button {
+    cursor: pointer;
+}
+
+#user-info {
+    min-width: 40px;
+    padding-left: 10px;
+    line-height: 30px;
+    float: left;
+    z-index: 4;
+}
+
+#user-info a {
+    text-decoration: none;
+    color: black;
+}
+
+#user-info a:hover {
+    color: white;
+}
+
 @media screen and (min-width: 800px) {
     #header .nav {
         display: block;
@@ -207,14 +293,14 @@ textarea
         border-right: 1px solid #E6E6E6;
         border-left: 1px solid #E6E6E6;
     }
-    
+
     #recipe {
         width: 60%;
         margin-left: 20%;
     }
-    
+
     #header #right-container {
-        min-width: 400px;
+        min-width: 430px;
         width: 35%;
         display: block;
     }
@@ -246,16 +332,15 @@ textarea
     #tab-view-container {
         float: right;
         width: calc(100% - 320px);
-
     }
-    
+
     .empty-message {
         width: 300px;
         height: 60px;
         line-height: 60px;
         background-color: rgba(255, 255, 255, 0.75);
     }
-    
+
     .search-suggestion {
         width: 310px;
         height: 60px;
@@ -263,11 +348,11 @@ textarea
         border: 1px solid #CFCFCF;
         border-top: none;
     }
-    
+
     .search-suggestion:hover {
         background-color: rgba(200, 200, 200, 0.75);
     }
-    
+
     .search-suggestion a {
         text-decoration: none;
         color: black;
@@ -281,7 +366,7 @@ textarea
         margin-top: 10px;
         float: left;
     }
-    
+
     .search-suggestion a span {
         line-height: 60px;
         float: left;
@@ -292,90 +377,8 @@ textarea
         display: inline-block;
         max-width: 240px;
     }
-    
-    #settings-menu {
-        display: none;
-        width: 300px;
-        height: 175px;
-    }
-    
-    #settings-menu ul li {
-        line-height: 50px;
-        width: 100%;
-        border-bottom: 1px solid #DDDDDD;
-        list-style: none;
-    }
-    
-    #settings-menu ul li a {
-        margin-left: 10px;
-        text-decoration: none;
-        color: black;
-    }
-    
-    #settings-menu ul li a:hover {
-        margin-left: 10px;
-        text-decoration: none;
-        color: black;
-    }
-    
-    #settings-menu ul li:last-child {
-        border-bottom: none;
-    }
-    
-    #settings-menu.active {
-        display: block;
-        position: absolute;
-        right: 10px;
-        top: 50px;
-        z-index: 9;
-        background-color: #2185FF;
-        box-shadow: 2px 2px 2px #DDD;
-        -webkit-animation-name: showSettins;
-        animation-name: showSettings;
-        -webkit-animation-duration: 0.75s;
-        animation-duration: 0.75s;
-    }
-    
-    @-webkit-keyframes showSettings {
-        from {
-            top: -150px;
-        }
-        to {
-            top:52px;
-            z-index: 10;
-        }
-    }
-    
-    @keyframes showSettings {
-        from {
-            top: -150px;
-        }
-        to {
-            top:52px;
-            z-index: 10;
-        }
-    }
-    
-    #user-info {
-        min-width: 40px;
-        padding-left: 10px;
-        line-height: 30px;
-    }
-    
-    #user-info a {
-        text-decoration: none;
-        color: black;
-    }
-    
-    #user-info a:hover {
-        color: white;
-    }
-    
+
     #right-container {
         margin-right: 10px;
-    }
-    
-    #user-settings-button {
-        cursor: pointer;
     }
 }

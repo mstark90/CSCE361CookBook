@@ -46,7 +46,7 @@
                     </div>
                     <div id="description-container">
                     </div>
-                    <div id="nutrition-container">Coming soon</div>
+                    <div id="nutrition-container"><span>Coming soon</span></div>
                 </div>
             </div>
         </div>

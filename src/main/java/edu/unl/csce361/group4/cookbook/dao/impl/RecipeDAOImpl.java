@@ -293,12 +293,17 @@ public class RecipeDAOImpl implements RecipeDAO {
             return null;
         }
         
-    	String sql = "SELECT * FROM recipes where category = ?";
+    	String sql = "SELECT * FROM recipes where category = ? LIMIT ?, ?";
         if (category.isEmpty())
         {
-            sql = "SELECT * FROM recipes";
+            sql = "SELECT * FROM recipes LIMIT ?, ?";
             
-            return (List<Recipe>) dataSource.query(sql, 
+            return (List<Recipe>) dataSource.query(sql,
+                    new Object[]
+    			{
+                            offset,
+                            count
+    			},
     			new BeanPropertyRowMapper(Recipe.class));
         }
 

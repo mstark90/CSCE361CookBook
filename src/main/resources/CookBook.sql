@@ -53,7 +53,7 @@ CREATE TABLE nutrition_information
     (nutrition_information_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
      ingredient_id BIGINT NOT NULL,
      nutrient_name VARCHAR(255) NOT NULL,
-     nutrient_amount INT NOT NULL,
-     serving_size INT NOT NULL,
+     nutrient_amount FLOAT NOT NULL,
+     serving_size FLOAT NOT NULL,
      units VARCHAR(60) NOT NULL,
      FOREIGN KEY (ingredient_id) REFERENCES ingredients (ingredient_id));

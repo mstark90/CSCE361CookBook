@@ -13,8 +13,8 @@ public class IngredientNutritionInformation {
     private long ingredientNutritionId;
     private long ingredientId;
     private String nutrientName;
-    private int nutrientAmount;
-    private int servingSize;
+    private float nutrientAmount;
+    private float servingSize;
     private MeasuringUnits units;
 
     /**
@@ -62,28 +62,28 @@ public class IngredientNutritionInformation {
     /**
      * @return the nutrientAmount
      */
-    public int getNutrientAmount() {
+    public float getNutrientAmount() {
         return nutrientAmount;
     }
 
     /**
      * @param nutrientAmount the nutrientAmount to set
      */
-    public void setNutrientAmount(int nutrientAmount) {
+    public void setNutrientAmount(float nutrientAmount) {
         this.nutrientAmount = nutrientAmount;
     }
 
     /**
      * @return the servingSize
      */
-    public int getServingSize() {
+    public float getServingSize() {
         return servingSize;
     }
 
     /**
      * @param servingSize the servingSize to set
      */
-    public void setServingSize(int servingSize) {
+    public void setServingSize(float servingSize) {
         this.servingSize = servingSize;
     }
 

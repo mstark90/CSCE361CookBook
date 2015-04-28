@@ -24,5 +24,9 @@
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="jdbc/cookbook"/>
     </bean>
+    
+    <bean id="dataGovApiKey" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="cookbook/dataGovApiKey"/>
+    </bean>
 
 </beans>

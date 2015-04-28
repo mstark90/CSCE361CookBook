@@ -218,6 +218,17 @@ public class IngredientDAOImpl implements IngredientDAO {
     	return ingredients;
     }
     
+    @Override
+    public List<Ingredient> getIngredients() 
+    {
+        String sql = "SELECT * FROM ingredients";
+        
+    	List<Ingredient> ingredients = dataSource.query(sql, 
+                    new BeanPropertyRowMapper(Ingredient.class));
+    	
+    	return ingredients;
+    }
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Ingredient getIngredient(long ingredientId, long offset, long count)
@@ -246,7 +257,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 
     @Override
     public List<IngredientNutritionInformation> getNutritionInformation(long ingredientId) {
-        return dataSource.query("SELECT * FROM nutrient_information WHERE ingredient_id = ?",
+        return dataSource.query("SELECT * FROM nutrition_information WHERE ingredient_id = ?",
                 new RowMapper<IngredientNutritionInformation>() {
 
             @Override
@@ -256,8 +267,8 @@ public class IngredientDAOImpl implements IngredientDAO {
                 nutritionInformation.setIngredientNutritionId(rs.getLong("nutrition_information_id"));
                 nutritionInformation.setIngredientId(rs.getLong("ingredient_id"));
                 nutritionInformation.setNutrientName(rs.getString("nutrient_name"));
-                nutritionInformation.setNutrientAmount(rs.getInt("nutrient_amount"));
-                nutritionInformation.setServingSize(rs.getInt("serving_size"));
+                nutritionInformation.setNutrientAmount(rs.getFloat("nutrient_amount"));
+                nutritionInformation.setServingSize(rs.getFloat("serving_size"));
                 nutritionInformation.setUnits(MeasuringUnits.valueOf(rs.getString("units")));
                 
                 return nutritionInformation;
@@ -277,8 +288,8 @@ public class IngredientDAOImpl implements IngredientDAO {
                 
                 ps.setLong(1, info.getIngredientId());
                 ps.setString(2, info.getNutrientName());
-                ps.setInt(3, info.getNutrientAmount());
-                ps.setInt(4, info.getServingSize());
+                ps.setFloat(3, info.getNutrientAmount());
+                ps.setFloat(4, info.getServingSize());
                 ps.setString(5, info.getUnits().toString());
             }
 

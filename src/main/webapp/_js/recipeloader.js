@@ -45,6 +45,15 @@ var recipeloader = {
                 $("#ingredients").append(recipeloader.ingredientTemplate(item));
             });
         });
+        $.get("rest/recipes/get/id/"+ recipeId+"/nutritionInformation", function(data) {
+            $("#nutrition-container").children().remove();
+            $("#recipe-image").attr("src", data.imageUrl);
+            $("#recipe-name").text(data.recipeName);
+            $.each(Object.keys(data), function(index, key) {
+                var nutrient = $("<span>"+ key +": &nbsp;"+ data[key] +"</span><br />");
+                $("#nutrition-container").children().append(nutrient);
+            });
+        });
     }
 };
 
@@ -81,5 +90,5 @@ $(document).ready(function() {
         } else {
             $("#settings-menu").addClass("active");
         }
-    })
+    });
 });

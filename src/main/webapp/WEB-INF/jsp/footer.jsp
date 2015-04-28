@@ -5,15 +5,5 @@
 --%>
 
 <div id="footer">
-    <div class="nav">
-        <span>
-            New
-        </span>
-        <span>
-            Top
-        </span>
-        <span>
-            Favorites
-        </span>
-    </div>
+
 </div>

@@ -23,6 +23,7 @@ public interface IngredientDAO {
     void delete(Ingredient ingredient);
     void delete(List<Ingredient> ingredients);
     List<Ingredient> getIngredients(List<Long> ingredientIds);
+    List<Ingredient> getIngredients();
     
     List<IngredientNutritionInformation> getNutritionInformation(long ingredientId);
     void loadNutritionInformation(List<IngredientNutritionInformation> nutritionInformation);
