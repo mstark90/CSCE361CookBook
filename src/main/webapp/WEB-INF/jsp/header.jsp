@@ -22,11 +22,11 @@
     <div id="settings-menu">
         <ul>
             <li>
-                <a href="recipeEditPage.jsp?recipe_id=0">Create Recipe</a>
+                <a href="recipeEditPage.jsp?recipeId=0">Create Recipe</a>
             </li>
             <% if(request.getParameter("recipeId") != null) { %>
             <li>
-                <a href="recipeEditPage.jsp?recipe_id=<%= request.getParameter("recipeId") %>">Edit Recipe</a>
+                <a href="recipeEditPage.jsp?recipeId=<%= request.getParameter("recipeId") %>">Edit Recipe</a>
             </li>
             <% } %>
         </ul>

@@ -11,6 +11,7 @@ import edu.unl.csce361.group4.cookbook.MeasuringUnits;
 import edu.unl.csce361.group4.cookbook.dao.IngredientDAO;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -101,7 +102,7 @@ public class IngredientController {
                     IngredientNutritionInformation info = new IngredientNutritionInformation();
                     info.setIngredientId(ingredient.getIngredientId());
                     info.setNutrientName(ingredientData.getString("nutrient"));
-                    info.setNutrientAmount(Float.parseFloat(ingredientData.getString(govApiKey)));
+                    info.setNutrientAmount(Float.parseFloat(ingredientData.getString("value")));
                     info.setUnits(MeasuringUnits.UNIT);
 
                     nutritionInformationList.add(info);
@@ -164,6 +165,10 @@ public class IngredientController {
     @RequestMapping(value = "/createIngredient", method = RequestMethod.POST, consumes = "application/json")
     public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         ingredientDAO.create(ingredient);
+        
+        List<IngredientNutritionInformation> nutritionInfo = downloadNutritionInformation(Arrays.asList(ingredient));
+        loadNutritionInformation(nutritionInfo);
+        
         return ingredient;
     }
 
@@ -176,12 +181,20 @@ public class IngredientController {
     @RequestMapping(value = "/modifyIngredient", method = RequestMethod.POST, consumes = "application/json")
     public Ingredient modifyIngredient(@RequestBody Ingredient ingredient) {
         ingredientDAO.modify(ingredient);
+        
+        List<IngredientNutritionInformation> nutritionInfo = downloadNutritionInformation(Arrays.asList(ingredient));
+        loadNutritionInformation(nutritionInfo);
+        
         return ingredient;
     }
 
     @RequestMapping(value = "/modifyIngredients", method = RequestMethod.POST, consumes = "application/json")
     public List<Ingredient> modifyIngredients(@RequestBody LinkedList<Ingredient> ingredients) {
         ingredientDAO.modify(ingredients);
+        
+        List<IngredientNutritionInformation> nutritionInfo = downloadNutritionInformation(ingredients);
+        loadNutritionInformation(nutritionInfo);
+        
         return ingredients;
     }
 

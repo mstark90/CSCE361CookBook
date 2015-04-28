@@ -142,7 +142,7 @@ public class RecipeController {
                     IngredientNutritionInformation info = new IngredientNutritionInformation();
                     info.setIngredientId(ingredient.getIngredientId());
                     info.setNutrientName(ingredientData.getString("nutrient"));
-                    info.setNutrientAmount(Float.parseFloat(ingredientData.getString(govApiKey)));
+                    info.setNutrientAmount(Float.parseFloat(ingredientData.getString("value")));
                     info.setUnits(MeasuringUnits.UNIT);
                     
                     nutritionInformationList.add(info);
@@ -191,7 +191,7 @@ public class RecipeController {
         for (Ingredient ingredient : recipe.getIngredients()) {
             List<IngredientNutritionInformation> nutritionInformation = ingredientDAO.getNutritionInformation(ingredient.getIngredientId());
             for (IngredientNutritionInformation ingredientNutrition : nutritionInformation) {
-                float amount = (float) ingredientNutrition.getNutrientAmount() / ingredientNutrition.getServingSize() * ingredient.getServingSize();
+                float amount = (float) ingredientNutrition.getNutrientAmount();
                 info.put(ingredientNutrition.getNutrientName(), amount);
             }
         }

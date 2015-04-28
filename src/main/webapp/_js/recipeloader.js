@@ -51,7 +51,7 @@ var recipeloader = {
             $("#recipe-name").text(data.recipeName);
             $.each(Object.keys(data), function(index, key) {
                 var nutrient = $("<span>"+ key +": &nbsp;"+ data[key] +"</span><br />");
-                $("#nutrition-container").children().append(nutrient);
+                $("#nutrition-container").append(nutrient);
             });
         });
     }
